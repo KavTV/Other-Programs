@@ -3,6 +3,7 @@ using OpenQA.Selenium.Chrome;
 using System.Threading;
 using System;
 
+
 namespace Instagram_BOT
 {
     class Program
@@ -39,14 +40,15 @@ namespace Instagram_BOT
         {
             //ChromeDriverService service = ChromeDriverService.CreateDefaultService();
             //service.HideCommandPromptWindow = true;
+            Random random = new Random();
 
             ChromeOptions option = new ChromeOptions();
             if (hiddenChrome == true)
             {
-            option.AddArgument("--headless");
+                option.AddArgument("--headless");
             }
             ChromeDriver chromeDriver = new ChromeDriver(option);
-            
+
 
             chromeDriver.Navigate().GoToUrl("https://www.instagram.com");
             Thread.Sleep(4000);
@@ -73,9 +75,9 @@ namespace Instagram_BOT
             // Siger nej til notifikationer kun hvis du kører den uden headless (chrome hidden)
             if (hiddenChrome == false)
             {
-            element = chromeDriver.FindElementByXPath("/html/body/div[4]/div/div/div[3]/button[2]");
-            element.Click();
-            Thread.Sleep(3000);
+                element = chromeDriver.FindElementByXPath("/html/body/div[4]/div/div/div[3]/button[2]");
+                element.Click();
+                Thread.Sleep(3000);
             }
 
             Console.WriteLine("Searching for tag...");
@@ -88,40 +90,54 @@ namespace Instagram_BOT
             Console.WriteLine("Successfully searched for tag...");
             Thread.Sleep(6000);
 
-            
-            likes = Math.Floor(likes/3);
-            
-            for (int i = 1; i <= likes; i++)
+            while (likes != likedPosts)
             {
 
-                for (int j = 1; j <= 3; j++)
+
+                for (int i = 1; likes != likedPosts; i++)
                 {
-                    try
+
+                    for (int j = 1; j <= 3; j++)
                     {
-                        // Åbn billede
-                        chromeDriver.FindElement(By.XPath($"/html/body/div[1]/section/main/article/div[2]/div/div[{i}]/div[{j}]")).Click();
-                        // Like billede
-                        Thread.Sleep(1100);
-                        chromeDriver.FindElement(By.XPath("/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button")).Click();
-                        // Luk billede
-                        Thread.Sleep(1300);
-                        chromeDriver.FindElement(By.XPath("/html/body/div[4]/div[3]/button")).Click();
-                        likedPosts++;
-                        Console.WriteLine("Liked posts: " + likedPosts);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Something went wrong");
-                        Console.WriteLine(e);
-                        Thread.Sleep(1000);
+                        if (likes != likedPosts)
+                        {
+                            int randomNumber = random.Next(1, 101);
+                            if (randomNumber >= 70)
+                            {
+
+
+                                try
+                                {
+                                    // Åbn billede
+                                    chromeDriver.FindElement(By.XPath($"/html/body/div[1]/section/main/article/div[2]/div/div[{i}]/div[{j}]")).Click();
+                                    // Like billede
+                                    Thread.Sleep(1100);
+                                    chromeDriver.FindElement(By.XPath("/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]/button")).Click();
+                                    // Luk billede
+                                    Thread.Sleep(1300);
+                                    chromeDriver.FindElement(By.XPath("/html/body/div[4]/div[3]/button")).Click();
+                                    likedPosts++;
+                                    Console.WriteLine("Liked posts: " + likedPosts);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine("Something went wrong");
+                                    Console.WriteLine(e);
+                                    Thread.Sleep(1000);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ignored a post");
+                            }
+                        }
                     }
 
                 }
-
             }
             likedPosts = 0;
             chromeDriver.Quit();
-            
+
         }
 
         public static string ReadPassword()
