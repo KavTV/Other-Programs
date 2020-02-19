@@ -71,17 +71,18 @@ namespace Google_Calendar_API
         public void RefreshHomework()
         {
             var service = ConnectToService();
+            homeworkList.Items.Clear();
+            homeworkListDate.Text = "";
 
             // Define parameters of request.
             EventsResource.ListRequest request = service.Events.List("primary");
             request.TimeMin = DateTime.Now;
             request.ShowDeleted = false;
             request.SingleEvents = true;
-            request.MaxResults = 10;
+            request.MaxResults = 20;
             request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
 
             // List events.
-            homeworkList.Items.Clear();
 
             Events events = request.Execute();
             Console.WriteLine("Upcoming events:");
@@ -94,20 +95,25 @@ namespace Google_Calendar_API
                     {
                         when = eventItem.Start.Date;
                     }
-                    string[] splitter = when.Split(" ");
+                    string[] date = when.Split(" ");
                     //Add event to list.
                     if (eventItem.Description == "Lektie")
                     {
-                        homeworkList.Items.Add(eventItem.Summary + " (" + splitter[0] + ")");
+                        homeworkList.Items.Add(eventItem.Summary);
+                        homeworkListDate.Text +=   date[0] + Environment.NewLine;
                     }
                 }
             }
+
             else
             {
                 Console.WriteLine("No upcoming events found.");
                 homeworkList.Items.Add("Ingen lektier!");
             }
-            
+            if (homeworkList.Items.Count < 1)
+            {
+                homeworkList.Items.Add("Ingen lektier!");
+            }
 
         }
 
@@ -157,6 +163,59 @@ namespace Google_Calendar_API
         {
             addDate.Text = "";
             addDescription.Text = "";
+        }
+
+        private void DeleteAHomework(string summaryID)
+        {
+            var calendarService = ConnectToService();
+
+            EventsResource.ListRequest request = calendarService.Events.List("primary");
+            request.TimeMin = DateTime.Now;
+            request.ShowDeleted = false;
+            request.SingleEvents = true;
+            request.MaxResults = 20;
+            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+            //List events.
+            Events events = request.Execute();
+
+            if (events.Items != null && events.Items.Count > 0)
+            {
+                foreach (var eventItem in events.Items)
+                {
+
+                    //Add event to list.
+                    if (eventItem.Description == "Lektie")
+                    {
+                        if (eventItem.Summary == summaryID)
+                        {
+                            calendarService.Events.Delete("primary", eventItem.Id).Execute();
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+        private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (homeworkList.SelectedIndex == -1)
+            {
+                return;
+            }
+            string summaryID = homeworkList.SelectedValue.ToString();
+            DeleteAHomework(summaryID);
+            RefreshHomework();
+
+
+        }
+
+        private void homeworkList_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            //MenuItemDelete_Click(sender, e);
         }
 
     }

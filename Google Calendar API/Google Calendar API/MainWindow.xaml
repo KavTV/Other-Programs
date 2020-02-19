@@ -13,7 +13,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Google_Calendar_API"
         mc:Ignorable="d"
-        Title="MainWindow" Height="457" Width="800">
+        Title="MainWindow" Height="457" Width="803">
     <Grid>
         <TextBox x:Name="addDescription" HorizontalAlignment="Left" Margin="527,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="243" AutomationProperties.HelpText="Skriv Lektie" FontSize="16" MaxLines="3"/>
         <Label Content="Lektie" HorizontalAlignment="Left" Margin="615,199,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.632,0.732" FontSize="22"/>
@@ -22,8 +22,19 @@
         <DatePicker x:Name="addDate" HorizontalAlignment="Left" Margin="604,117,0,0" VerticalAlignment="Top" Height="46" Width="89" Background="{x:Null}" BorderBrush="#89000000" IsTodayHighlighted="True" Text="ere"/>
         <Label Content="Lektier" HorizontalAlignment="Left" Margin="181,30,0,0" VerticalAlignment="Top" FontSize="40"/>
         <Label Content="Tilføj Lektie" HorizontalAlignment="Left" Margin="541,30,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.632,0.732" FontSize="40"/>
-        <ListBox x:Name="homeworkList" FontSize="20" Margin="39,113,315,14"/>
+        <DockPanel LastChildFill="False" Margin="19,129,320,21">
+            <ListBox x:Name="homeworkList" FontSize="20" DockPanel.Dock="Left" Width="348">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="menuItemDelete" Header="Slet lektie" Click="MenuItemDelete_Click"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+            <TextBlock x:Name="homeworkListDate" FontSize="20" DockPanel.Dock="Right" Width="111" Height="288" Padding="0,10,0,20" Margin="0,0,0,0" LineHeight="40"/>
+        </DockPanel>
         <Label x:Name="addStatusLabel" Content="" HorizontalAlignment="Left" Margin="593,374,0,0" VerticalAlignment="Top" FontSize="14" HorizontalContentAlignment="Center" Width="110" VerticalContentAlignment="Center"/>
+
+
 
 
 
