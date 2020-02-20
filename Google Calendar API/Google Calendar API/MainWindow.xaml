@@ -13,28 +13,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Google_Calendar_API"
         mc:Ignorable="d"
-        Title="MainWindow" Height="457" Width="803">
+        Title="Lektie Tilføjer" Height="562" Width="817">
     <Grid>
         <TextBox x:Name="addDescription" HorizontalAlignment="Left" Margin="527,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="243" AutomationProperties.HelpText="Skriv Lektie" FontSize="16" MaxLines="3"/>
         <Label Content="Lektie" HorizontalAlignment="Left" Margin="615,199,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.632,0.732" FontSize="22"/>
-        <Button x:Name="addHomeworkBTN" Content="Tilføj Lektie" HorizontalAlignment="Left" Margin="593,325,0,0" VerticalAlignment="Top" Height="32" Width="110" Background="#FF2C5CC5" BorderBrush="#FF2C5CC5" Click="addHomeworkBTN_Click"/>
+        <Button x:Name="addHomeworkBTN" Content="Tilføj Lektie" HorizontalAlignment="Left" Margin="593,428,0,0" VerticalAlignment="Top" Height="32" Width="110" Background="#FF2C5CC5" BorderBrush="#FF2C5CC5" Click="addHomeworkBTN_Click"/>
         <Rectangle HorizontalAlignment="Left" Margin="500,0,0,1" Width="5" Fill="Black" Opacity="0.52"/>
         <DatePicker x:Name="addDate" HorizontalAlignment="Left" Margin="604,117,0,0" VerticalAlignment="Top" Height="46" Width="89" Background="{x:Null}" BorderBrush="#89000000" IsTodayHighlighted="True" Text="ere"/>
         <Label Content="Lektier" HorizontalAlignment="Left" Margin="181,30,0,0" VerticalAlignment="Top" FontSize="40"/>
         <Label Content="Tilføj Lektie" HorizontalAlignment="Left" Margin="541,30,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.632,0.732" FontSize="40"/>
-        <DockPanel LastChildFill="False" Margin="19,129,320,21">
-            <ListBox x:Name="homeworkList" FontSize="20" DockPanel.Dock="Left" Width="348">
+        <DockPanel LastChildFill="False" Margin="19,129,0,21" HorizontalAlignment="Left" Width="464">
+            <ListBox x:Name="homeworkList" FontSize="17" DockPanel.Dock="Left" Width="348">
                 <ListBox.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="menuItemDelete" Header="Slet lektie" Click="MenuItemDelete_Click"/>
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
-            <TextBlock x:Name="homeworkListDate" FontSize="20" DockPanel.Dock="Right" Width="111" Height="288" Padding="0,10,0,20" Margin="0,0,0,0" LineHeight="40"/>
+            <TextBlock x:Name="homeworkListDate" FontSize="17" DockPanel.Dock="Right" Width="111" Height="395" Padding="0,10,0,0" Margin="0,0,0,0" LineHeight="36" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True"/>
         </DockPanel>
-        <Label x:Name="addStatusLabel" Content="" HorizontalAlignment="Left" Margin="593,374,0,0" VerticalAlignment="Top" FontSize="14" HorizontalContentAlignment="Center" Width="110" VerticalContentAlignment="Center"/>
+        <Label x:Name="addStatusLabel" Content="" HorizontalAlignment="Left" Margin="593,477,0,0" VerticalAlignment="Top" FontSize="14" HorizontalContentAlignment="Center" Width="110" VerticalContentAlignment="Center"/>
 
-
+        <RadioButton Content="Dansk" HorizontalAlignment="Left" Margin="515,314,0,0" VerticalAlignment="Top" GroupName="Mode"/>
+        <RadioButton Content="Engelsk" HorizontalAlignment="Left" Margin="577,314,0,0" VerticalAlignment="Top" GroupName="Mode" />
+        <RadioButton Content="Matematik" HorizontalAlignment="Left" Margin="650,314,0,0" VerticalAlignment="Top" GroupName="Mode" />
+        <RadioButton Content="Fysik" HorizontalAlignment="Left" Margin="736,314,0,0" VerticalAlignment="Top" GroupName="Mode" />
 
 
 

@@ -19,7 +19,7 @@ using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using System.IO;
 using System.Threading;
-
+using System.Globalization;
 
 namespace Google_Calendar_API
 {
@@ -35,6 +35,7 @@ namespace Google_Calendar_API
             RefreshHomework();
 
         }
+
         public CalendarService ConnectToService()
         {
             // If modifying these scopes, delete your previously saved credentials
@@ -100,7 +101,7 @@ namespace Google_Calendar_API
                     if (eventItem.Description == "Lektie")
                     {
                         homeworkList.Items.Add(eventItem.Summary);
-                        homeworkListDate.Text +=   date[0] + Environment.NewLine;
+                        homeworkListDate.Text += date[0] + Environment.NewLine;
                     }
                 }
             }
@@ -117,9 +118,15 @@ namespace Google_Calendar_API
 
         }
 
+        private int _isSuccess;
+        public int IsSuccess { get { return _isSuccess; } set { _isSuccess = value; } }
+
+
 
         private void addHomeworkBTN_Click(object sender, RoutedEventArgs e)
         {
+
+
             var calendarService = ConnectToService();
             var ev = new Event();
             int year = addDate.SelectedDate.Value.Year;
@@ -141,10 +148,13 @@ namespace Google_Calendar_API
                 end.DateTime = new DateTime(year, month + 1, 1);
             }
 
+
+
             ev.Start = start;
             ev.End = end;
             ev.Summary = addDescription.Text;
             ev.Description = "Lektie";
+
             try
             {
                 Event recurringEvent = calendarService.Events.Insert(ev, "primary").Execute();
@@ -212,11 +222,9 @@ namespace Google_Calendar_API
 
         }
 
-        private void homeworkList_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
-            //MenuItemDelete_Click(sender, e);
-        }
 
     }
+
 }
+    
+
