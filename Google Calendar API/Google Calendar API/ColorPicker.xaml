@@ -1,0 +1,21 @@
+﻿<Window x:Class="Google_Calendar_API.ColorPicker"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Google_Calendar_API"
+        mc:Ignorable="d"
+        Title="ColorPicker" Height="207" Width="664">
+    <Grid>
+        <xctk:ColorPicker Name="ColorPickPhysics" Margin="492,55,0,0" DisplayColorAndName="True" SelectedColorChanged="cp_SelectedColorChanged_4" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113" SelectedColor="LawnGreen"/>
+        <xctk:ColorPicker Name="ColorPickDanish" Margin="24,55,0,0" DisplayColorAndName="True"  SelectedColorChanged="cp_SelectedColorChanged_1" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113" SelectedColor="{Binding DanishBrushColor}" />
+        <xctk:ColorPicker Name="ColorPickEnglish" Margin="176,55,0,0" DisplayColorAndName="True" SelectedColorChanged="cp_SelectedColorChanged_2" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113" SelectedColor="CadetBlue" />
+        <xctk:ColorPicker Name="ColorPickMath" Margin="332,55,0,0" DisplayColorAndName="True" SelectedColorChanged="cp_SelectedColorChanged_3" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113" SelectedColor="ForestGreen"/>
+        <Label Content="Dansk" HorizontalAlignment="Left" Margin="51,107,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <Label Content="Engelsk" HorizontalAlignment="Left" Margin="192,107,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <Label Content="Matematik" HorizontalAlignment="Left" Margin="333,107,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <Label Content="Fysik" HorizontalAlignment="Left" Margin="521,107,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <Label Content="Skift farve på lektie" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="22"/>
+    </Grid>
+</Window>

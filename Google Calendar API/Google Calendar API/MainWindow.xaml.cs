@@ -31,10 +31,10 @@ namespace Google_Calendar_API
         public MainWindow()
         {
             InitializeComponent();
-
             RefreshHomework();
 
         }
+        RadioButton CheckedRadio = new RadioButton();
 
         public CalendarService ConnectToService()
         {
@@ -97,12 +97,51 @@ namespace Google_Calendar_API
                         when = eventItem.Start.Date;
                     }
                     string[] date = when.Split(" ");
-                    //Add event to list.
-                    if (eventItem.Description == "Lektie")
+                    string[] DayAndMonth = date[0].Split("-");
+
+                    string desc = eventItem.Description;
+                    if (desc != null)
                     {
-                        homeworkList.Items.Add(eventItem.Summary);
-                        homeworkListDate.Text += date[0] + Environment.NewLine;
+                        string[] SubjectSplit = desc.Split(":");
+
+
+
+
+
+                        //Add event to list.
+                        if (SubjectSplit[0] == "Lektie")
+                        {
+
+                            if (SubjectSplit.Length >= 2)
+                            {
+                                if (SubjectSplit[1] == "Dansk")
+                                {
+                                    homeworkList.Items.Add(new ListBoxItem { Content = "Dansk: "+eventItem.Summary, Background = Brushes.IndianRed });
+                                }
+                                if (SubjectSplit[1] == "Engelsk")
+                                {
+                                    homeworkList.Items.Add(new ListBoxItem { Content = "Engelsk: " + eventItem.Summary, Background = Brushes.CadetBlue });
+                                }
+                                if (SubjectSplit[1] == "Matematik")
+                                {
+                                    homeworkList.Items.Add(new ListBoxItem { Content = "Matematik: " + eventItem.Summary, Background = Brushes.ForestGreen });
+                                }
+                                if (SubjectSplit[1] == "Fysik")
+                                {
+                                    homeworkList.Items.Add(new ListBoxItem { Content = "Fysik: " + eventItem.Summary, Background = Brushes.LawnGreen });
+                                }
+                            }
+                            else
+                            {
+                                homeworkList.Items.Add(new ListBoxItem { Content = eventItem.Summary, Background = Brushes.Gray });
+                            }
+                            DateTime test = new DateTime(Int32.Parse(DayAndMonth[2]), Int32.Parse(DayAndMonth[1]), Int32.Parse(DayAndMonth[0]));
+                            int DaysRemain = ( test- DateTime.Today).Days;
+                            homeworkListDate.Text += DayAndMonth[0] + "-"+DayAndMonth[1]+ "   Dage tilbage: "+DaysRemain + Environment.NewLine;
+                        }
+
                     }
+
                 }
             }
 
@@ -118,22 +157,18 @@ namespace Google_Calendar_API
 
         }
 
-        private int _isSuccess;
-        public int IsSuccess { get { return _isSuccess; } set { _isSuccess = value; } }
 
-
-
+        
+        
         private void addHomeworkBTN_Click(object sender, RoutedEventArgs e)
         {
-
-
             var calendarService = ConnectToService();
             var ev = new Event();
             int year = addDate.SelectedDate.Value.Year;
             int month = addDate.SelectedDate.Value.Month;
-            int day = addDate.SelectedDate.Value.Day;
+            int day = addDate.SelectedDate.Value.Day; 
 
-
+            
             EventDateTime start = new EventDateTime();
             start.DateTime = new DateTime(year, month, day);
 
@@ -147,13 +182,30 @@ namespace Google_Calendar_API
             {
                 end.DateTime = new DateTime(year, month + 1, 1);
             }
+            string subject = "";
+            if (CheckedRadio == RadioDanish)
+            {
+                subject = "Dansk";
+            }
+            else if (CheckedRadio == RadioEnglish)
+            {
+                subject = "Engelsk";
+            }
+            if (CheckedRadio == RadioMath)
+            {
+                subject = "Matematik";
+            }
+            if (CheckedRadio == RadioPhysics)
+            {
+                subject = "Fysik";
+            }
 
 
 
             ev.Start = start;
             ev.End = end;
             ev.Summary = addDescription.Text;
-            ev.Description = "Lektie";
+            ev.Description = "Lektie:" + subject;
 
             try
             {
@@ -188,20 +240,19 @@ namespace Google_Calendar_API
 
             //List events.
             Events events = request.Execute();
-
+            string[] summarySplit = summaryID.Split(": ");
             if (events.Items != null && events.Items.Count > 0)
             {
                 foreach (var eventItem in events.Items)
                 {
 
                     //Add event to list.
-                    if (eventItem.Description == "Lektie")
-                    {
-                        if (eventItem.Summary == summaryID)
+                    
+                        if (eventItem.Summary == summarySplit[2])
                         {
                             calendarService.Events.Delete("primary", eventItem.Id).Execute();
                         }
-                    }
+                    
                 }
             }
 
@@ -223,8 +274,22 @@ namespace Google_Calendar_API
         }
 
 
+        private void radioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            RadioButton ck = sender as RadioButton;
+            if (ck.IsChecked.Value)
+                CheckedRadio = ck;
+        }
+
+        private void SettingsBTN_Click(object sender, RoutedEventArgs e)
+        {
+            ColorPicker win = new ColorPicker();
+            win.Show();
+        }
+
+        
     }
 
 }
-    
+
 
