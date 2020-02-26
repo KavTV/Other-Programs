@@ -61,11 +61,11 @@ namespace Google_Calendar_API.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #CF4123.
+        ///   Looks up a localized string similar to ws.
         /// </summary>
-        internal static string DanishColor {
+        internal static string String1 {
             get {
-                return ResourceManager.GetString("DanishColor", resourceCulture);
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
     }

@@ -6,16 +6,17 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Google_Calendar_API"
         mc:Ignorable="d"
-        Title="ColorPicker" Height="207" Width="664">
+        Title="ColorPicker" Height="259" Width="664" Closing="Window_Closing">
     <Grid>
-        <xctk:ColorPicker Name="ColorPickPhysics" Margin="492,55,0,0" DisplayColorAndName="True" SelectedColorChanged="cp_SelectedColorChanged_4" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113" SelectedColor="LawnGreen"/>
-        <xctk:ColorPicker Name="ColorPickDanish" Margin="24,55,0,0" DisplayColorAndName="True"  SelectedColorChanged="cp_SelectedColorChanged_1" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113" SelectedColor="{Binding DanishBrushColor}" />
-        <xctk:ColorPicker Name="ColorPickEnglish" Margin="176,55,0,0" DisplayColorAndName="True" SelectedColorChanged="cp_SelectedColorChanged_2" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113" SelectedColor="CadetBlue" />
-        <xctk:ColorPicker Name="ColorPickMath" Margin="332,55,0,0" DisplayColorAndName="True" SelectedColorChanged="cp_SelectedColorChanged_3" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113" SelectedColor="ForestGreen"/>
+        <xctk:ColorPicker Name="ColorPickPhysics" Margin="492,55,0,0" DisplayColorAndName="True" SelectedColorChanged="cp_SelectedColorChanged_4" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113"/>
+        <xctk:ColorPicker Name="ColorPickDanish" Margin="24,55,0,0" DisplayColorAndName="True"  SelectedColorChanged="ColorPickDanishChanged" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113"  />
+        <xctk:ColorPicker Name="ColorPickEnglish" Margin="176,55,0,0" DisplayColorAndName="True" SelectedColorChanged="cp_SelectedColorChanged_2" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113"  />
+        <xctk:ColorPicker Name="ColorPickMath" Margin="332,55,0,0" DisplayColorAndName="True" SelectedColorChanged="cp_SelectedColorChanged_3" AvailableColorsSortingMode="HueSaturationBrightness" Height="41" VerticalAlignment="Top" HorizontalAlignment="Left" Width="113" />
         <Label Content="Dansk" HorizontalAlignment="Left" Margin="51,107,0,0" VerticalAlignment="Top" FontSize="22"/>
         <Label Content="Engelsk" HorizontalAlignment="Left" Margin="192,107,0,0" VerticalAlignment="Top" FontSize="22"/>
         <Label Content="Matematik" HorizontalAlignment="Left" Margin="333,107,0,0" VerticalAlignment="Top" FontSize="22"/>
         <Label Content="Fysik" HorizontalAlignment="Left" Margin="521,107,0,0" VerticalAlignment="Top" FontSize="22"/>
         <Label Content="Skift farve på lektie" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="22"/>
+        <Label Content="Farver gemmes når du lukker vinduet og har genstartet programmet" HorizontalAlignment="Center" Margin="0,153,0,0" VerticalAlignment="Top" FontSize="15"/>
     </Grid>
 </Window>

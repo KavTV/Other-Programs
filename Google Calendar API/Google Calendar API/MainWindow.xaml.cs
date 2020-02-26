@@ -28,6 +28,53 @@ namespace Google_Calendar_API
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        static public string HomeworkColors = Environment.CurrentDirectory + @"/SavedColors.txt";
+        Color danishBrushColor;
+        Color englishBrushColor;
+        Color mathBrushColor;
+        Color physicsBrushColor;
+
+        #region get/set
+        public Color DanishBrushColor { get => danishBrushColor; set => danishBrushColor = value; }
+        public Color EnglishBrushColor { get => englishBrushColor; set => englishBrushColor = value; }
+        public Color MathBrushColor { get => mathBrushColor; set => mathBrushColor = value; }
+        public Color PhysicsBrushColor { get => physicsBrushColor; set => physicsBrushColor = value; }
+        #endregion
+
+        public MainWindow(int j) {
+            string read = "";
+            StreamReader sr = new StreamReader(HomeworkColors);
+            while (!sr.EndOfStream)
+            {
+                read = sr.ReadLine();
+            }
+
+            sr.Close();
+            char[] SplitSymbols = { ' ', ':' };
+            string[] DecideSubjectColor = read.Split(SplitSymbols);
+
+            for (int i = 0; i < DecideSubjectColor.Length; i++)
+            {
+                if (DecideSubjectColor[i] == "Danish")
+                {
+                    danishBrushColor = (Color)ColorConverter.ConvertFromString(DecideSubjectColor[i + 1]);
+                }
+                else if (DecideSubjectColor[i] == "English")
+                {
+                    englishBrushColor = (Color)ColorConverter.ConvertFromString(DecideSubjectColor[i + 1]);
+                }
+                else if (DecideSubjectColor[i] == "Math")
+                {
+                    mathBrushColor = (Color)ColorConverter.ConvertFromString(DecideSubjectColor[i + 1]);
+                }
+                else if (DecideSubjectColor[i] == "Physics")
+                {
+                    physicsBrushColor = (Color)ColorConverter.ConvertFromString(DecideSubjectColor[i + 1]);
+                }
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -114,21 +161,70 @@ namespace Google_Calendar_API
 
                             if (SubjectSplit.Length >= 2)
                             {
+                                if (!File.Exists(HomeworkColors))
+                                {
+                                    using (FileStream fs = File.Create(HomeworkColors)) ;
+                                    StreamWriter sw = new StreamWriter(HomeworkColors);
+
+                                    sw.WriteLine("Danish #FFCD5C5C:" + "English #FF5F9EA0:" + "Math #FF228B22:" + "Physics #FF7CFC00:");
+                                    //sw.WriteLine("#FF5F9EA0");
+                                    //sw.WriteLine("#FF228B22");
+                                    //sw.WriteLine("#FF7CFC00");
+
+                                    sw.Close();
+
+                                }
+                                string read = "";
+                                StreamReader sr = new StreamReader(HomeworkColors);
+                                while (!sr.EndOfStream)
+                                {
+                                    read = sr.ReadLine();
+                                }
+
+                                sr.Close();
+
+                                char[] SplitSymbols = { ' ', ':' };
+                                string[] DecideSubjectColor = read.Split(SplitSymbols);
+
+                                for (int i = 0; i < DecideSubjectColor.Length; i++)
+                                {
+                                    if (DecideSubjectColor[i] == "Danish")
+                                    {
+                                        danishBrushColor = (Color)ColorConverter.ConvertFromString(DecideSubjectColor[i + 1]);
+                                    }
+                                    else if (DecideSubjectColor[i] == "English")
+                                    {
+                                        englishBrushColor = (Color)ColorConverter.ConvertFromString(DecideSubjectColor[i + 1]);
+                                    }
+                                    else if (DecideSubjectColor[i] == "Math")
+                                    {
+                                        mathBrushColor = (Color)ColorConverter.ConvertFromString(DecideSubjectColor[i + 1]);
+                                    }
+                                    else if (DecideSubjectColor[i] == "Physics")
+                                    {
+                                        physicsBrushColor = (Color)ColorConverter.ConvertFromString(DecideSubjectColor[i + 1]);
+                                    }
+                                }
+
                                 if (SubjectSplit[1] == "Dansk")
                                 {
-                                    homeworkList.Items.Add(new ListBoxItem { Content = "Dansk: "+eventItem.Summary, Background = Brushes.IndianRed });
+                                    SolidColorBrush brush = new SolidColorBrush(danishBrushColor);
+                                    homeworkList.Items.Add(new ListBoxItem { Content = "Dansk: " + eventItem.Summary, Background = brush });
                                 }
-                                if (SubjectSplit[1] == "Engelsk")
+                                else if (SubjectSplit[1] == "Engelsk")
                                 {
-                                    homeworkList.Items.Add(new ListBoxItem { Content = "Engelsk: " + eventItem.Summary, Background = Brushes.CadetBlue });
+                                    SolidColorBrush brush = new SolidColorBrush(englishBrushColor);
+                                    homeworkList.Items.Add(new ListBoxItem { Content = "Engelsk: " + eventItem.Summary, Background = brush });
                                 }
-                                if (SubjectSplit[1] == "Matematik")
+                                else if (SubjectSplit[1] == "Matematik")
                                 {
-                                    homeworkList.Items.Add(new ListBoxItem { Content = "Matematik: " + eventItem.Summary, Background = Brushes.ForestGreen });
+                                    SolidColorBrush brush = new SolidColorBrush(mathBrushColor);
+                                    homeworkList.Items.Add(new ListBoxItem { Content = "Matematik: " + eventItem.Summary, Background = brush });
                                 }
-                                if (SubjectSplit[1] == "Fysik")
+                                else if (SubjectSplit[1] == "Fysik")
                                 {
-                                    homeworkList.Items.Add(new ListBoxItem { Content = "Fysik: " + eventItem.Summary, Background = Brushes.LawnGreen });
+                                    SolidColorBrush brush = new SolidColorBrush(physicsBrushColor);
+                                    homeworkList.Items.Add(new ListBoxItem { Content = "Fysik: " + eventItem.Summary, Background = brush });
                                 }
                             }
                             else
@@ -136,8 +232,15 @@ namespace Google_Calendar_API
                                 homeworkList.Items.Add(new ListBoxItem { Content = eventItem.Summary, Background = Brushes.Gray });
                             }
                             DateTime test = new DateTime(Int32.Parse(DayAndMonth[2]), Int32.Parse(DayAndMonth[1]), Int32.Parse(DayAndMonth[0]));
-                            int DaysRemain = ( test- DateTime.Today).Days;
-                            homeworkListDate.Text += DayAndMonth[0] + "-"+DayAndMonth[1]+ "   Dage tilbage: "+DaysRemain + Environment.NewLine;
+                            int DaysRemain = (test - DateTime.Today).Days;
+                            if (homeworkListDate.Text == "")
+                            {
+                                homeworkListDate.Text += DayAndMonth[0] + "-" + DayAndMonth[1] + "   Dage tilbage: " + DaysRemain;
+                            }
+                            else
+                            {
+                                homeworkListDate.Text += Environment.NewLine + DayAndMonth[0] + "-" + DayAndMonth[1] + "   Dage tilbage: " + DaysRemain ;
+                            }
                         }
 
                     }
@@ -158,17 +261,17 @@ namespace Google_Calendar_API
         }
 
 
-        
-        
+
+
         private void addHomeworkBTN_Click(object sender, RoutedEventArgs e)
         {
             var calendarService = ConnectToService();
             var ev = new Event();
             int year = addDate.SelectedDate.Value.Year;
             int month = addDate.SelectedDate.Value.Month;
-            int day = addDate.SelectedDate.Value.Day; 
+            int day = addDate.SelectedDate.Value.Day;
 
-            
+
             EventDateTime start = new EventDateTime();
             start.DateTime = new DateTime(year, month, day);
 
@@ -247,12 +350,12 @@ namespace Google_Calendar_API
                 {
 
                     //Add event to list.
-                    
-                        if (eventItem.Summary == summarySplit[2])
-                        {
-                            calendarService.Events.Delete("primary", eventItem.Id).Execute();
-                        }
-                    
+
+                    if (eventItem.Summary == summarySplit[2])
+                    {
+                        calendarService.Events.Delete("primary", eventItem.Id).Execute();
+                    }
+
                 }
             }
 
@@ -287,9 +390,28 @@ namespace Google_Calendar_API
             win.Show();
         }
 
-        
-    }
+        private void SyncScroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            var textToSync = (sender == homeworkListScroll) ? TxtBlockScroll : homeworkListScroll;
 
+            textToSync.ScrollToVerticalOffset(e.VerticalOffset);
+            textToSync.ScrollToHorizontalOffset(e.HorizontalOffset);
+            //if (homeworkListScroll != TxtBlockScroll )
+            //{
+            //    textToSync.ScrollToVerticalOffset(homeworkListScroll.VerticalOffset);
+            //}
+        }
+
+
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            //Program doesent close properly without this
+            Environment.Exit(0);
+        }
+    }
 }
+
+
 
 

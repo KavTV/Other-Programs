@@ -9,6 +9,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Resources;
+using System.IO;
 
 namespace Google_Calendar_API
 {
@@ -17,44 +19,63 @@ namespace Google_Calendar_API
     /// </summary>
     public partial class ColorPicker : Window
     {
+
+        
+            MainWindow main = new MainWindow(1);
+
         public ColorPicker()
         {
             InitializeComponent();
 
-            //der er data binding på Dansk color picker
-            DanishBrushColor = (Color)ColorConverter.ConvertFromString(Properties.Resources.DanishColor);
+            
+            
+
+            SelectColorOnPicker();
+
         }
-        Color danishBrushColor;
-        Color englishBrushColor;
-        Color mathBrushColor;
-        Color physicsBrushColor;
 
-        public  Color DanishBrushColor { get => danishBrushColor; set => danishBrushColor = value; }
-        public Color EnglishBrushColor { get => englishBrushColor; set => englishBrushColor = value; }
-        public Color MathBrushColor { get => mathBrushColor; set => mathBrushColor = value; }
-        public Color PhysicsBrushColor { get => physicsBrushColor; set => physicsBrushColor = value; }
-
-        private void cp_SelectedColorChanged_1(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        private void SelectColorOnPicker()
         {
-            DanishBrushColor = ColorPickDanish.SelectedColor.Value;
+            ColorPickDanish.SelectedColor = main.DanishBrushColor;
+            ColorPickEnglish.SelectedColor = main.EnglishBrushColor;
+            ColorPickMath.SelectedColor = main.MathBrushColor;
+            ColorPickPhysics.SelectedColor = main.PhysicsBrushColor;
+        }
+        
+
+        private void ColorPickDanishChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
             
-            
-            
+
+
         }
 
         private void cp_SelectedColorChanged_2(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            EnglishBrushColor = ColorPickEnglish.SelectedColor.Value;
+            
         }
 
         private void cp_SelectedColorChanged_3(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            MathBrushColor = ColorPickMath.SelectedColor.Value;
+            
         }
 
         private void cp_SelectedColorChanged_4(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            PhysicsBrushColor = ColorPickPhysics.SelectedColor.Value;
+            
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            main.DanishBrushColor = ColorPickDanish.SelectedColor.Value;
+            main.EnglishBrushColor = ColorPickEnglish.SelectedColor.Value;
+            main.MathBrushColor = ColorPickMath.SelectedColor.Value;
+            main.PhysicsBrushColor = ColorPickPhysics.SelectedColor.Value;
+
+            File.WriteAllText(MainWindow.HomeworkColors, $"Danish {main.DanishBrushColor.ToString()}:English {main.EnglishBrushColor.ToString()}:Math {main.MathBrushColor.ToString()}:Physics {main.PhysicsBrushColor.ToString()}:");
+
+        }
+
+        
     }
 }

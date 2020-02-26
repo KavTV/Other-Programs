@@ -14,21 +14,25 @@
         
         xmlns:local="clr-namespace:Google_Calendar_API"
         mc:Ignorable="d"
-        Title="Lektie Tilføjer" Height="562" Width="903">
+        Title="Lektie Tilføjer" Height="562" Width="921" Closed="Window_Closed">
     <Grid>
-        <Rectangle Margin="0,0,280,1" Fill="Black" Opacity="0.52" HorizontalAlignment="Right" Width="5"/>
+        <Rectangle Margin="634,0,0,1" Fill="Black" Opacity="0.52" HorizontalAlignment="Left" Width="5"/>
         <Label Content="Lektier" HorizontalAlignment="Left" Margin="181,30,0,0" VerticalAlignment="Top" FontSize="40"/>
         <DockPanel LastChildFill="False" Margin="19,129,0,0" HorizontalAlignment="Left" Width="594" Height="396" VerticalAlignment="Top">
-            <ListBox x:Name="homeworkList" FontSize="17" DockPanel.Dock="Left" Width="374">
-                <ListBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem x:Name="menuItemDelete" Header="Slet lektie" Click="MenuItemDelete_Click"/>
-                    </ContextMenu>
-                </ListBox.ContextMenu>
-            </ListBox>
-            <TextBlock x:Name="homeworkListDate" FontSize="17" DockPanel.Dock="Right" Width="215" Height="396" Padding="0,10,0,0" Margin="0,0,0,0" LineHeight="36" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True"/>
+            <ScrollViewer x:Name="homeworkListScroll" ScrollViewer.ScrollChanged="SyncScroll_ScrollChanged" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <ListBox x:Name="homeworkList" FontSize="17" DockPanel.Dock="Left" Width="374" >
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="menuItemDelete" Header="Slet lektie" Click="MenuItemDelete_Click"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+            </ScrollViewer>
+            <ScrollViewer x:Name="TxtBlockScroll" Height="Auto" ScrollViewer.ScrollChanged="SyncScroll_ScrollChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <TextBlock x:Name="homeworkListDate" FontSize="17" DockPanel.Dock="Right" Width="215" Padding="0,10,0,0" Margin="0,0,0,0" LineHeight="36" />
+            </ScrollViewer>
         </DockPanel>
-        <StackPanel Margin="628,10,0,10" HorizontalAlignment="Left" Width="261">
+        <StackPanel Margin="648,10,0,10" HorizontalAlignment="Left" Width="261">
             <Label Content="Tilføj Lektie" RenderTransformOrigin="0.632,0.732" FontSize="40" HorizontalAlignment="Center"/>
             <Label Content="Dato" Margin="0,40,0,0" FontSize="22" HorizontalAlignment="Center"/>
             <DatePicker x:Name="addDate" Height="46" Width="89" Background="{x:Null}" BorderBrush="#89000000" IsTodayHighlighted="True" Text="ere" Margin="0,10,0,0"/>
@@ -41,7 +45,7 @@
             <Button x:Name="addHomeworkBTN" Content="Tilføj Lektie" Height="32" Width="110" Background="#FF2C5CC5" BorderBrush="#FF2C5CC5" Click="addHomeworkBTN_Click" Margin="0,10,0,0"/>
             <Label x:Name="addStatusLabel" Content="" FontSize="14" HorizontalContentAlignment="Center" Width="110" VerticalContentAlignment="Center" Margin="0,10,0,0"/>
         </StackPanel>
-        <Button x:Name="SettingsBTN" Content="Settings" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="SettingsBTN_Click"/>
+        <Button x:Name="SettingsBTN" Content="Indstillinger" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="SettingsBTN_Click" Background="#FF2C5CC5" BorderBrush="#FF2C5CC5"/>
 
 
 
