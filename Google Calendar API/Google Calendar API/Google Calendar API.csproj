@@ -6,6 +6,7 @@
     <RootNamespace>Google_Calendar_API</RootNamespace>
     <UseWPF>true</UseWPF>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <ApplicationIcon>Unavngivet.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
