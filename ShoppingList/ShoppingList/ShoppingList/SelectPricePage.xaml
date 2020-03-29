@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ShoppingList"
+             x:Class="ShoppingList.SelectPricePage"
+             Title="Pris">
+             
+    <!--Styling-->
+    <ContentPage.Resources>
+        <!-- Implicit styles -->
+        <Style TargetType="{x:Type Editor}">
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource AppBackgroundColor}" />
+        </Style>
+
+        <Style TargetType="Button"
+               ApplyToDerivedTypes="True"
+               CanCascade="True">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="BackgroundColor" Value="#1976D2" />
+            <Setter Property="TextColor" Value="White" />
+
+        </Style>
+    </ContentPage.Resources>
+
+    <!--Placement-->
+    <StackLayout Margin="20" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+        <Label Text="Hvad koster varen?" FontSize="25" 
+               HorizontalOptions="Center" TextColor="Black"></Label>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        <local:CusomEntry x:Name="ItemPrice" Placeholder="Skriv pris" FontSize="20" Grid.Column="1" HorizontalOptions="Center" HorizontalTextAlignment="Center" Keyboard="Numeric" Completed="OnContinueBtnClicked"/>
+            <Label Text="kr" FontSize="20" Grid.Column="2" VerticalOptions="Center"/>
+            
+        </Grid>
+        <Grid>
+
+            <Button Text="&#xf35a;" FontSize="25" HorizontalOptions="Center"
+                    WidthRequest="50" HeightRequest="50" CornerRadius="25"
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    Clicked="OnContinueBtnClicked"/>
+
+        </Grid>
+    </StackLayout>
+</ContentPage>

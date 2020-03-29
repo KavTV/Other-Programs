@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.CreateItemPage"
+             Title="Tilføj Ting">
+    <!--Styling-->
+    <ContentPage.Resources>
+        <!-- Implicit styles -->
+        <Style TargetType="{x:Type Editor}">
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource AppBackgroundColor}" />
+        </Style>
+
+        <Style TargetType="Button"
+               ApplyToDerivedTypes="True"
+               CanCascade="True">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="BackgroundColor" Value="#1976D2" />
+            <Setter Property="TextColor" Value="White" />
+
+        </Style>
+    </ContentPage.Resources>
+
+    <!--Placement-->
+    <StackLayout Margin="20" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+        <Label Text="Skriv navnet på ting" FontSize="25" 
+               HorizontalOptions="Center" TextColor="Black"></Label>
+        <Entry x:Name="ItemName" Placeholder="Skriv det du vil tilføje til din liste" FontSize="20" Text="{Binding Text}" Completed="OnContinueBtnClicked" Keyboard="Text"/>
+        <Grid>
+
+            <Button Text="&#xf35a;" FontSize="25" HorizontalOptions="Center"
+                    WidthRequest="50" HeightRequest="50" CornerRadius="25"
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    Clicked="OnContinueBtnClicked"/>
+            
+        </Grid>
+    </StackLayout>
+</ContentPage>

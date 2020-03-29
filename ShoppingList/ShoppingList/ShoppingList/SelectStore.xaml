@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.SelectStore"
+             Title="Pris">
+    <!--Styling-->
+    <ContentPage.Resources>
+        <!-- Implicit styles -->
+
+    </ContentPage.Resources>
+
+    <!--Placement-->
+    <StackLayout Margin="20" VerticalOptions="CenterAndExpand" HorizontalOptions="Center">
+        <Label Text="Hvilken butik er den fra?" FontSize="25" 
+               HorizontalOptions="Center" TextColor="Black"></Label>
+        <Grid HorizontalOptions="Center">
+            <ListView x:Name="StoreList" ItemSelected="ListView_ItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding Name}" TextColor="{Binding Color}" FontSize="Medium" HorizontalOptions="Center" VerticalOptions="Center"></Label>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+    </StackLayout>
+</ContentPage>
