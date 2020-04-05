@@ -8,10 +8,7 @@
     <!--Styling-->
     <ContentPage.Resources>
         <!-- Implicit styles -->
-        <Style TargetType="{x:Type Editor}">
-            <Setter Property="BackgroundColor"
-                    Value="{StaticResource AppBackgroundColor}" />
-        </Style>
+        
 
         <Style TargetType="Button"
                ApplyToDerivedTypes="True"
@@ -33,7 +30,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-        <local:CusomEntry x:Name="ItemPrice" Placeholder="Skriv pris" FontSize="20" Grid.Column="1" HorizontalOptions="Center" HorizontalTextAlignment="Center" Keyboard="Numeric" Completed="OnContinueBtnClicked"/>
+        <local:CusomEntry x:Name="ItemPrice" Placeholder="Skriv pris" Text="{Binding Price}" FontSize="20" Grid.Column="1" HorizontalOptions="Center" HorizontalTextAlignment="Center" Keyboard="Numeric" Completed="OnContinueBtnClicked"/>
             <Label Text="kr" FontSize="20" Grid.Column="2" VerticalOptions="Center"/>
             
         </Grid>

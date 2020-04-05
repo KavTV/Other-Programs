@@ -1,12 +1,26 @@
 ﻿using System;
 using System.IO;
 using Xamarin.Forms;
+using ShoppingList.Data;
 
 namespace ShoppingList
 {
     public partial class App : Application
     {
         public static string FolderPath { get; private set; }
+        private static ShopDatabase database;
+
+        public static ShopDatabase Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new ShopDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Notes.db3"));
+                }
+                return database;
+            }
+        }
 
         public App()
         {

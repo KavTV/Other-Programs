@@ -8,17 +8,23 @@
         <!-- Implicit styles -->
 
     </ContentPage.Resources>
-
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Tilføj ny butik" Clicked="TilføjButik_Clicked"/>
+    </ContentPage.ToolbarItems>
     <!--Placement-->
     <StackLayout Margin="20" VerticalOptions="CenterAndExpand" HorizontalOptions="Center">
         <Label Text="Hvilken butik er den fra?" FontSize="25" 
                HorizontalOptions="Center" TextColor="Black"></Label>
-        <Grid HorizontalOptions="Center">
+        <Grid x:Name="gMain" HorizontalOptions="Center">
             <ListView x:Name="StoreList" ItemSelected="ListView_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Label Text="{Binding Name}" TextColor="{Binding Color}" FontSize="Medium" HorizontalOptions="Center" VerticalOptions="Center"></Label>
+                            <ViewCell.ContextActions>
+                                <MenuItem Text="Slet" Clicked="SletButik_Clicked"/>
+                                
+                            </ViewCell.ContextActions>
+                            <Label Text="{Binding Name}" TextColor="{Binding GetColor}" FontSize="Medium" HorizontalOptions="Center" VerticalOptions="Center"></Label>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

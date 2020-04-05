@@ -1,35 +1,59 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ShoppingList.ItemsPage"
-             Title="Indkøbsliste">
+             x:Class="ShoppingList.ItemsPage" NavigationPage.HasNavigationBar="False">
+
     <ContentPage.Resources>
-        <!-- Implicit styles -->
-        <Style TargetType="{x:Type ListView}">
-            <Setter Property="BackgroundColor"
-                    Value="{StaticResource AppBackgroundColor}" />
+        <Style TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#1976d2"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            
         </Style>
     </ContentPage.Resources>
-    <ContentPage.ToolbarItems>
+    
+    
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Fjern alle" Clicked="ToolbarDeleteAll_Clicked" Order="Primary" Priority="0"/>
         <ToolbarItem Text="Fjern Markeret" Clicked="ToolbarRemove_Clicked"/>
-        <ToolbarItem Text="Tilføj"
-                     Clicked="OnItemAddClicked" />
-    </ContentPage.ToolbarItems>
-    <ListView x:Name="listView" 
-              Margin="20"
+        <ToolbarItem Text="Tilføj" Clicked="OnItemAddClicked" />
+    </ContentPage.ToolbarItems>-->
+    
+        <StackLayout>
+        <StackLayout>
+            <ListView x:Name="listView" 
+              Margin="20,0"
               ItemSelected="OnListViewItemSelected"
-              SeparatorColor="Black" >
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <Grid>
-                        <Label Text="{Binding Text}" FontSize="Medium" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextDecorations="{Binding Decoration}"/>
-                        <Label Text="{Binding Price, StringFormat='{0:F2}kr'}" TextColor="Black" FontSize="Medium" HorizontalOptions="End" VerticalOptions="CenterAndExpand"/>
-                        <Label Text="{Binding Store}" TextColor="{Binding TextColor}" VerticalOptions="End"/>
-                    </Grid>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-
-    </ListView>
+              SeparatorColor="Black">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <SwipeItem Text="Navn" Clicked="EditName_Clicked"/>
+                                <SwipeItem Text="Pris" Clicked="EditPrice_Clicked"/>
+                                <SwipeItem Text="Butik" Clicked="EditStore_Clicked"/>
+                            </ViewCell.ContextActions>
+                            <Grid>                                
+                                <Label Text="{Binding Text}" FontSize="Medium" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextDecorations="{Binding Decoration}"/>
+                                <Label Text="{Binding Price, StringFormat='{0:F2}kr'}" TextColor="Black" FontSize="Medium" HorizontalOptions="End" VerticalOptions="CenterAndExpand"/>
+                                <Label Text="{Binding StoreName}" TextColor="{Binding TextColor}" VerticalOptions="End"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+        <Grid MinimumHeightRequest="30" ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Text="&#xf2ed;" FontFamily="{StaticResource FontAwesomeSolid}" Clicked="ToolbarDeleteAll_Clicked" Grid.Column="0"/>
+            <Button Text="&#xf068;" FontFamily="{StaticResource FontAwesomeSolid}" Clicked="ToolbarRemove_Clicked" FontSize="15" Grid.Column="1"/>
+            <Button Text="&#xf067;" FontFamily="{StaticResource FontAwesomeSolid}" Clicked="OnItemAddClicked" Grid.Column="2"/>
+        </Grid>
+        </StackLayout>
+    
 </ContentPage>

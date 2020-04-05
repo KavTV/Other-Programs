@@ -32,13 +32,13 @@ namespace ShoppingList.Models
 
 
 
-        public void AddItem(string key,string item, double price, string store, bool isselected)
+        public void AddItem(string key,string item, double price, bool isselected, Store store)
         {
             // If we already had added a friend with this name
             if (key != null)
             {
                 this.itemDictionary.Remove(key);
-                this.itemDictionary.Add(key, new Item(key, item, price, store, isselected));
+                this.itemDictionary.Add(key, new Item(key, item, price, isselected, store));
                 Console.WriteLine("You had already added " + item + " before.");
             }
             // Else if we do not have this friend details 
@@ -47,7 +47,7 @@ namespace ShoppingList.Models
             {
                 // Add him in the dictionary
                 key = Path.GetRandomFileName();
-                this.itemDictionary.Add(key, new Item(key, item, price, store, isselected));
+                this.itemDictionary.Add(key, new Item(key, item, price, isselected, store));
                 Console.WriteLine("Item added successfully.");
             } // end if
         } // end public bool AddFriend(string key,string item, int price, string store, bool isselected)

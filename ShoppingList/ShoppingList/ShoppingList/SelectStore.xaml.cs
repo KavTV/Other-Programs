@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using ShoppingList.Models;
 using System.IO;
+using Xam.Plugin.SimpleColorPicker;
 
 namespace ShoppingList
 {
@@ -21,30 +22,24 @@ namespace ShoppingList
             itemText = text;
             itemPrice = price;
 
-            
+
         }
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
-            var StoreNames = new List<Store>();
-            StoreNames.Add(new Store("Aldi", Color.DodgerBlue));
-            StoreNames.Add(new Store("Bilka", Color.Blue));
-            StoreNames.Add(new Store("Brugsen", Color.Red));
-            StoreNames.Add(new Store("Fakta", Color.DarkRed));
-            StoreNames.Add(new Store("Føtex", Color.Blue));
-            StoreNames.Add(new Store("Kvickly", Color.Red));
-            StoreNames.Add(new Store("Lidl", Color.YellowGreen));
-            StoreNames.Add(new Store("Meny", Color.OrangeRed));
-            StoreNames.Add(new Store("Netto", Color.FromRgb(230, 192, 53)));
-            StoreNames.Add(new Store("Rema 1000", Color.DarkBlue));
-            StoreNames.Add(new Store("Jysk", Color.DarkBlue));
-            StoreNames.Add(new Store("Jem & Fix", Color.Black));
-            StoreNames.Add(new Store("XL", Color.Black));
-            StoreNames.Add(new Store("Andet", Color.Gray));
-            StoreList.ItemsSource = StoreNames
-                    .OrderBy(d => d.Name)
-                    .ToList();
+            await UpdateList();
         }
 
+        private async Task UpdateList()
+        {
+            if (App.Database.GetShopsAsync(1).Result == null)
+            {
+                PopulateShopDatabase();
+            }
+            var GetShops = await App.Database.GetShopsAsync();
+            StoreList.ItemsSource = GetShops
+                .OrderBy(d => d.Name)
+                    .ToList();
+        }
 
         private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
@@ -53,8 +48,8 @@ namespace ShoppingList
                 try
                 {
                     ItemInformation iteminfo = ItemInformation.Instance();
-                    var label = e.SelectedItem as Store;
-                    await Task.Run(()=> iteminfo.AddItem(null, itemText, itemPrice, label.Name, false));
+                    var selectedStore = e.SelectedItem as Store;
+                    await Task.Run(() => iteminfo.AddItem(null, itemText, itemPrice, false, selectedStore));
                     await Task.Run(() => iteminfo.Save());
                     await Navigation.PopToRootAsync();
                 }
@@ -64,6 +59,62 @@ namespace ShoppingList
                     await DisplayAlert("Oprettelse af vare", "Der gik noget galt", "OK");
                 }
             }
+        }
+
+        private void PopulateShopDatabase() // if shoplist is empty, add shops
+        {
+            AddStoreToDB("Aldi", Color.DodgerBlue);
+            AddStoreToDB("Bilka", Color.Blue);
+            AddStoreToDB("Brugsen", Color.Red);
+            AddStoreToDB("Fakta", Color.DarkRed);
+            AddStoreToDB("Føtex", Color.Blue);
+            AddStoreToDB("Kvickly", Color.Red);
+            AddStoreToDB("Lidl", Color.YellowGreen);
+            AddStoreToDB("Meny", Color.Orange);
+            AddStoreToDB("Netto", Color.FromRgb(230, 192, 53));
+            AddStoreToDB("Rema 1000", Color.DarkBlue);
+            AddStoreToDB("Jysk", Color.DarkBlue);
+            AddStoreToDB("Jem & Fix", Color.Black);
+            AddStoreToDB("XL", Color.Black);
+            AddStoreToDB("Andet", Color.Gray);
+
+        }
+
+        private async void AddStoreToDB(string name, Color color)
+        {
+            Store store = new Store();
+            store.Name = name;
+            store.SetColor = color.ToHex();
+            await App.Database.SaveShopAsync(store);
+        }
+
+        private async void TilføjButik_Clicked(object sender, EventArgs e)
+        {
+            string result = await DisplayPromptAsync("Tilføj Butik", "Hvad skal navnet på den nye butik være?");
+            if (result == null)
+            {
+                return;
+            }
+            ColorDialogSettings ColorSettings = new ColorDialogSettings();
+            ColorSettings.EditAlfa = false;
+            var color = await ColorPickerDialog.Show(gMain, "ColorPickerDialog", Color.Blue, ColorSettings);
+
+            if (result != "")
+            {
+                Store store = new Store();
+                store.Name = result;
+                store.SetColor = color.ToHex();
+                await App.Database.SaveShopAsync(store);
+                await UpdateList();
+            }
+        }
+
+        private async void SletButik_Clicked(object sender, EventArgs e)
+        {
+            var menuitem = sender as MenuItem;
+            var item = menuitem.BindingContext as Store;
+            await App.Database.DeleteShopAsync(item);
+            await UpdateList();
         }
     }
 }
