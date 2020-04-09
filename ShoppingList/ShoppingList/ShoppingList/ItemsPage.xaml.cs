@@ -124,8 +124,8 @@ namespace ShoppingList
         {
             var menuitem = sender as MenuItem;
             var item = menuitem.BindingContext as Item;
-            var result = await DisplayPromptAsync("Ændre Navn", "Hvad vil du ændre navnet på varen til?","OK","Cancel","Mælk",-1,Keyboard.Text);
-            if (result != "")
+            var result = await DisplayPromptAsync("Ændre Navn", $"Hvad vil du ændre navnet på {item.Text} til?", "OK", "Cancel", $"{item.Text}", -1, Keyboard.Text);
+            if (result != null)
             {
                 item.Text = result;
                 iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
@@ -133,17 +133,53 @@ namespace ShoppingList
                 UpdateList();
             }
         }
-        private async void EditPrice_Clicked(object sender, EventArgs e) //Not done
+
+        private async void EditPrice_Clicked(object sender, EventArgs e) // Edits the selected items price
         {
             var menuitem = sender as MenuItem;
             var item = menuitem.BindingContext as Item;
-
+            var result = await DisplayPromptAsync("Ændre Pris", $"Hvad vil du ændre prisen på {item.Text} til?", "OK", "Cancel", $"{item.Price}", -1, Keyboard.Numeric);
+            if (result != null)
+            {
+                item.Price = Int32.Parse(result);
+                iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
+                iteminfo.Save();
+                UpdateList();
+            }
         }
-        private async void EditStore_Clicked(object sender, EventArgs e)//Not done
-        {
-            var menuitem = sender as MenuItem;
-            var item = menuitem.BindingContext as Item;
 
+        private async void EditStore_Clicked(object sender, EventArgs e)// Edits the selected items Store
+        {
+            var menuitem = sender as MenuItem; //Get item selected
+            var item = menuitem.BindingContext as Item;//Convert to Item
+
+            var getShops = await App.Database.GetShopsAsync(); // Get the shops to select from
+            string[] storelist = new string[getShops.Count]; // Make array to put shop labels into.
+            int i = 0;
+            foreach (var thing in getShops) //Make an array of store names
+            {
+                storelist[i] = thing.Name;
+                i++;
+            }
+
+            string result = await DisplayActionSheet("Ændre Butik", "Cancel", null, storelist); // Promt to select store
+            if (result != "Cancel" && result != "")//If a store is selected, find the item and update item.
+            {
+                foreach (var thing in getShops)
+                {
+                    if (thing.Name == result)
+                    {
+                        item.Store = thing;
+                        iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
+                        iteminfo.Save();
+                        UpdateList();
+                        return;
+                    }
+                }
+
+
+
+            }
         }
     }
 }

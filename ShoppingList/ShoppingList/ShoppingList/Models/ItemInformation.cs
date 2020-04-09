@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ShoppingList.Models
 {
@@ -32,45 +33,61 @@ namespace ShoppingList.Models
 
 
 
-        public void AddItem(string key,string item, double price, bool isselected, Store store)
+        public void AddItem(string key, string text, double price, bool isselected, Store store)
         {
-            // If we already had added a friend with this name
-            if (key != null)
+            try
             {
-                this.itemDictionary.Remove(key);
-                this.itemDictionary.Add(key, new Item(key, item, price, isselected, store));
-                Console.WriteLine("You had already added " + item + " before.");
+                // If we already had added a friend with this name
+                if (key != null)
+                {
+                    this.itemDictionary.Remove(key);
+                    this.itemDictionary.Add(key, new Item(key, text, price, isselected, store));
+                    Console.WriteLine("You had already added " + text + ", Updating info..");
+                }
+                // Else if we do not have this item details 
+                // in our dictionary
+                else
+                {
+                    // Add him in the dictionary
+                    key = Path.GetRandomFileName();
+                    this.itemDictionary.Add(key, new Item(key, text, price, isselected, store));
+                    Console.WriteLine("Item added successfully.");
+                } // end if
             }
-            // Else if we do not have this friend details 
-            // in our dictionary
-            else
+            catch (Exception)
             {
-                // Add him in the dictionary
-                key = Path.GetRandomFileName();
-                this.itemDictionary.Add(key, new Item(key, item, price, isselected, store));
-                Console.WriteLine("Item added successfully.");
-            } // end if
+
+                Console.WriteLine("Something went wrong");
+            }
         } // end public bool AddFriend(string key,string item, int price, string store, bool isselected)
 
         public void RemoveItem(string key)
         {
-            // If we do not have a friend with this name
-            if (!this.itemDictionary.ContainsKey(key))
+            try
             {
-                Console.WriteLine(key + " had not been added before.");
-            }
-            // Else if we have a friend with this name
-            else
-            {
-                if (this.itemDictionary.Remove(key))
+
+                // If we do not have a friend with this name
+                if (!this.itemDictionary.ContainsKey(key))
                 {
-                    Console.WriteLine(key + " had been removed successfully.");
+                    Console.WriteLine(key + " had not been added before.");
                 }
+                // Else if we have a friend with this name
                 else
                 {
-                    Console.WriteLine("Unable to remove " + key);
+                    if (this.itemDictionary.Remove(key))
+                    {
+                        Console.WriteLine(key + " had been removed successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Unable to remove " + key);
+                    } // end if
                 } // end if
-            } // end if
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Something went wrong");
+            }
         } // end public bool RemoveFriend(string name)
 
 

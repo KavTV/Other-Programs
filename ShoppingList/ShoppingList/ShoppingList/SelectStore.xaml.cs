@@ -21,8 +21,6 @@ namespace ShoppingList
             InitializeComponent();
             itemText = text;
             itemPrice = price;
-
-
         }
         protected override async void OnAppearing()
         {
@@ -90,14 +88,14 @@ namespace ShoppingList
 
         private async void TilføjButik_Clicked(object sender, EventArgs e)
         {
-            string result = await DisplayPromptAsync("Tilføj Butik", "Hvad skal navnet på den nye butik være?");
+            string result = await DisplayPromptAsync("Tilføj Butik", "Hvad skal navnet på den nye butik være?", "OK", "Cancel", "Meny", -1, Keyboard.Text);
             if (result == null)
             {
                 return;
             }
             ColorDialogSettings ColorSettings = new ColorDialogSettings();
             ColorSettings.EditAlfa = false;
-            var color = await ColorPickerDialog.Show(gMain, "ColorPickerDialog", Color.Blue, ColorSettings);
+            var color = await ColorPickerDialog.Show(gMain, "Vælg Farve", Color.Blue, ColorSettings);
 
             if (result != "")
             {
