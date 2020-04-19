@@ -5,6 +5,8 @@ using Xamarin.Forms;
 using ShoppingList.Models;
 using System.Threading.Tasks;
 
+
+
 namespace ShoppingList
 {
     public partial class ItemsPage : ContentPage
@@ -15,6 +17,7 @@ namespace ShoppingList
         public ItemsPage()
         {
             InitializeComponent();
+            
         }
 
         protected override void OnAppearing()
@@ -177,9 +180,14 @@ namespace ShoppingList
                     }
                 }
 
-
-
             }
+
+
+            async void Test123()
+            {
+                await DisplayAlert("Test", "","");
+            }
+
         }
     }
 }
