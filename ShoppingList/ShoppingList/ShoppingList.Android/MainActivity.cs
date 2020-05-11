@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.IO;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -11,7 +11,7 @@ using Android.OS;
 namespace ShoppingList.Droid
 {
     [Activity(Label = "Din Indkøbsliste", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
-    //[IntentFilter(new[] { Intent.ActionView }, Categories = new[] { Intent.CategoryDefault },DataScheme ="file", DataHost = "*", DataMimeType = "*/*", DataPathPattern = ".*\\..*\\..*\\..*\\.store")] Open files with .store when you click on them (Does not work)
+    [IntentFilter(new[] { Intent.ActionView, Intent.ActionEdit, Intent.ActionSend }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataMimeType = "text/plain")]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -31,22 +31,27 @@ namespace ShoppingList.Droid
 
             if (Intent.Action == Intent.ActionView)
             {
-                var pdf = Intent.ClipData.GetItemAt(0);
+                //Find way to get the path from intent and save the file
 
-                var uriFromExtras = Intent.GetParcelableExtra(Intent.ExtraStream) as Android.Net.Uri;
-                var subject = Intent.GetStringExtra(Intent.ExtraSubject);
+                //var uriFromExtras = Intent.GetParcelableExtra(Intent.ExtraStream) as Android.Net.Uri;
+                //var subject = Intent.GetStringExtra(Intent.ExtraSubject);
 
-                //var pdfStream = ContentResolver.OpenInputStream(pdf.Uri);
+                //// Get the info from ClipData 
+                //var path = Intent.Data.Path;
+                
+                //// Open a stream from the URI 
 
-                //var memOfPdf = new System.IO.MemoryStream();
-                //pdfStream.CopyTo(memOfPdf);
 
-                //var docsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-                //var filePath = System.IO.Path.Combine(docsPath, "temp.pdf");
+                //// Save it over 
+                //FileStream fs = new FileStream(path,FileMode.Open);
+                //StreamReader sr = new StreamReader(fs);
+                //string ok = "";
+                //while (!sr.EndOfStream)
+                //{
+                //    ok += sr.ReadLine();
+                //}
 
-                //System.IO.File.WriteAllBytes(filePath, memOfPdf.ToArray());
-
-                //_mainForms.DisplayThePDF(filePath);
+                
             }
 
         }

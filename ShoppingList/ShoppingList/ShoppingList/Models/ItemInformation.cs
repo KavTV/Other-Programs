@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace ShoppingList.Models
 {
@@ -157,6 +159,27 @@ namespace ShoppingList.Models
                 return itemList;
             }
             return null;
+        }
+
+        public async void ShareItems()
+        {
+            await Share.RequestAsync(new ShareFileRequest
+            {
+                Title = "Del Liste",
+                File = new ShareFile(DATA_FILENAME)
+            });
+        }
+        
+        public async void OpenUri()
+        {
+            var supportsUri = await Launcher.CanOpenAsync("txt");
+            if (supportsUri)
+            {
+                await Launcher.OpenAsync("");
+            }
+            {
+
+            }
         }
 
     }

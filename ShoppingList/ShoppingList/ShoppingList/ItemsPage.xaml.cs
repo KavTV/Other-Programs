@@ -47,7 +47,7 @@ namespace ShoppingList
                     iteminfo.Save();
                     UpdateList();
                 }
-                else
+                else // else make it unselected
                 {
                     selectedItem.IsSelected = false;
                     iteminfo.AddItem(selectedItem.Key, selectedItem.Text, selectedItem.Price, selectedItem.IsSelected, selectedItem.Store);
@@ -125,16 +125,17 @@ namespace ShoppingList
 
         private async void EditName_Clicked(object sender, EventArgs e)
         {
-            var menuitem = sender as MenuItem;
-            var item = menuitem.BindingContext as Item;
-            var result = await DisplayPromptAsync("Ændre Navn", $"Hvad vil du ændre navnet på {item.Text} til?", "OK", "Cancel", $"{item.Text}", -1, Keyboard.Text);
-            if (result != null)
-            {
-                item.Text = result;
-                iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
-                iteminfo.Save();
-                UpdateList();
-            }
+            iteminfo.ShareItems();
+            //var menuitem = sender as MenuItem;
+            //var item = menuitem.BindingContext as Item;
+            //var result = await DisplayPromptAsync("Ændre Navn", $"Hvad vil du ændre navnet på {item.Text} til?", "OK", "Cancel", $"{item.Text}", -1, Keyboard.Text);
+            //if (result != null)
+            //{
+            //    item.Text = result;
+            //    iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
+            //    iteminfo.Save();
+            //    UpdateList();
+            //}
         }
 
         private async void EditPrice_Clicked(object sender, EventArgs e) // Edits the selected items price
@@ -180,12 +181,6 @@ namespace ShoppingList
                     }
                 }
 
-            }
-
-
-            async void Test123()
-            {
-                await DisplayAlert("Test", "","");
             }
 
         }

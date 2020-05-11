@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.Android", "Sho
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.iOS", "ShoppingList\ShoppingList.iOS\ShoppingList.iOS.csproj", "{6E9523D6-AC0F-45B8-BF6D-8A9EF535E1A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList", "ShoppingList\ShoppingList\ShoppingList.csproj", "{3F5BC338-FF2E-49CC-B2EA-8AF91ECEB831}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingList", "ShoppingList\ShoppingList\ShoppingList.csproj", "{3F5BC338-FF2E-49CC-B2EA-8AF91ECEB831}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
