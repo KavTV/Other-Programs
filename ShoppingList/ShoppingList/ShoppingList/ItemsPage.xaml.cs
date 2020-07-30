@@ -108,7 +108,7 @@ namespace ShoppingList
                 UpdateList();
             }
         }
-
+        
         private void ToolbarRemove_Clicked(object sender, EventArgs e)
         {
             RemoveSelectedItems();
@@ -125,21 +125,22 @@ namespace ShoppingList
 
         private async void EditName_Clicked(object sender, EventArgs e)
         {
-            iteminfo.ShareItems();
-            //var menuitem = sender as MenuItem;
-            //var item = menuitem.BindingContext as Item;
-            //var result = await DisplayPromptAsync("Ændre Navn", $"Hvad vil du ændre navnet på {item.Text} til?", "OK", "Cancel", $"{item.Text}", -1, Keyboard.Text);
-            //if (result != null)
-            //{
-            //    item.Text = result;
-            //    iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
-            //    iteminfo.Save();
-            //    UpdateList();
-            //}
+            
+            var menuitem = sender as MenuItem;
+            var item = menuitem.BindingContext as Item;
+            var result = await DisplayPromptAsync("Ændre Navn", $"Hvad vil du ændre navnet på {item.Text} til?", "OK", "Cancel", $"{item.Text}", -1, Keyboard.Text);
+            if (result != null)
+            {
+                item.Text = result;
+                iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
+                iteminfo.Save();
+                UpdateList();
+            }
         }
 
         private async void EditPrice_Clicked(object sender, EventArgs e) // Edits the selected items price
         {
+            
             var menuitem = sender as MenuItem;
             var item = menuitem.BindingContext as Item;
             var result = await DisplayPromptAsync("Ændre Pris", $"Hvad vil du ændre prisen på {item.Text} til?", "OK", "Cancel", $"{item.Price}", -1, Keyboard.Numeric);

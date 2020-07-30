@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
+
 namespace ShoppingList.Droid
 {
     [Activity(Label = "Din Indkøbsliste", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
@@ -37,13 +38,14 @@ namespace ShoppingList.Droid
                 //var subject = Intent.GetStringExtra(Intent.ExtraSubject);
 
                 //// Get the info from ClipData 
-                //var path = Intent.Data.Path;
+                //Android.Net.Uri uri = Intent.Data;
                 
+
                 //// Open a stream from the URI 
 
 
                 //// Save it over 
-                //FileStream fs = new FileStream(path,FileMode.Open);
+                //FileStream fs = new FileStream(path, FileMode.Open);
                 //StreamReader sr = new StreamReader(fs);
                 //string ok = "";
                 //while (!sr.EndOfStream)
@@ -51,7 +53,7 @@ namespace ShoppingList.Droid
                 //    ok += sr.ReadLine();
                 //}
 
-                
+
             }
 
         }
@@ -61,5 +63,9 @@ namespace ShoppingList.Droid
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+
+
+
     }
 }
