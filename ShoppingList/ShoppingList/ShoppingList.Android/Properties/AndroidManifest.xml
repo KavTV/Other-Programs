@@ -2,19 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="3" android:versionName="0.2" package="com.KavAPPS.shoppinglist" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
 	<application android:label="Din Indkøbsliste" android:icon="@mipmap/icon">
-    <activity android:name="recieveshoppinglist">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <data android:scheme="file" />
-        <data android:mimeType="*/*" />
-        <data android:host="*" />
-        <data android:pathPattern=".*\\.store" />
-        <data android:pathPattern=".*\\..*\\.store" />
-        <data android:pathPattern=".*\\..*\\..*\\.store" />
-        <data android:pathPattern=".*\\..*\\..*\\..*\\.store" />
-      </intent-filter>
-    </activity>
   </application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   
