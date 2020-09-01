@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ShoppingList.ItemsPage" NavigationPage.HasNavigationBar="False">
+             x:Class="ShoppingList.ItemsPage" NavigationPage.HasNavigationBar="True">
 
     <ContentPage.Resources>
         <Style TargetType="Button">
@@ -9,41 +9,46 @@
             <Setter Property="TextColor" Value="White"/>
             <Setter Property="CornerRadius" Value="0"/>
             <Setter Property="Padding" Value="0"/>
-            
         </Style>
     </ContentPage.Resources>
-    
-    
+
+
     <!--<ContentPage.ToolbarItems>
         <ToolbarItem Text="Fjern alle" Clicked="ToolbarDeleteAll_Clicked" Order="Primary" Priority="0"/>
         <ToolbarItem Text="Fjern Markeret" Clicked="ToolbarRemove_Clicked"/>
         <ToolbarItem Text="Tilføj" Clicked="OnItemAddClicked" />
     </ContentPage.ToolbarItems>-->
-    
-        <StackLayout>
-        <StackLayout>
-            <ListView x:Name="listView" 
-              Margin="20,0"
+
+    <StackLayout>
+
+        <ListView x:Name="listView" 
+              
               ItemSelected="OnListViewItemSelected"
-              SeparatorColor="Black">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.ContextActions>
-                                <SwipeItem Text="Navn" Clicked="EditName_Clicked"/>
-                                <SwipeItem Text="Pris" Clicked="EditPrice_Clicked"/>
-                                <SwipeItem Text="Butik" Clicked="EditStore_Clicked"/>
-                            </ViewCell.ContextActions>
-                            <Grid>                                
-                                <Label Text="{Binding Text}" FontSize="Medium" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextDecorations="{Binding Decoration}"/>
-                                <Label Text="{Binding Price, StringFormat='{0:F2}kr'}" TextColor="Black" FontSize="Medium" HorizontalOptions="End" VerticalOptions="CenterAndExpand"/>
-                                <Label Text="{Binding StoreName}" TextColor="{Binding TextColor}" VerticalOptions="End"/>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+              SeparatorColor="Black" RowHeight="100"
+              CachingStrategy="RecycleElement"
+                  HasUnevenRows="True" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <SwipeItem Text="Navn" Clicked="EditName_Clicked"/>
+                            <SwipeItem Text="Pris" Clicked="EditPrice_Clicked"/>
+
+                        </ViewCell.ContextActions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Text="{Binding Text}" Margin="20,7" FontSize="Medium" TextColor="Black" HorizontalOptions="Start" VerticalOptions="Center" TextDecorations="{Binding Decoration}"/>
+                            <Label Grid.Column="1" Text="{Binding Price, StringFormat='{0:F2}kr'}" Margin="0,0,20,0" TextColor="Black" FontSize="Medium" HorizontalOptions="End" VerticalOptions="CenterAndExpand"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
         <Grid MinimumHeightRequest="30" ColumnSpacing="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -54,6 +59,6 @@
             <Button Text="&#xf068;" FontFamily="{StaticResource FontAwesomeSolid}" Clicked="ToolbarRemove_Clicked" FontSize="15" Grid.Column="1"/>
             <Button Text="&#xf067;" FontFamily="{StaticResource FontAwesomeSolid}" Clicked="OnItemAddClicked" Grid.Column="2"/>
         </Grid>
-        </StackLayout>
-    
+    </StackLayout>
+
 </ContentPage>

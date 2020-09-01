@@ -12,7 +12,7 @@ using Android.OS;
 namespace ShoppingList.Droid
 {
     [Activity(Label = "Din Indkøbsliste", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
-    [IntentFilter(new[] { Intent.ActionView, Intent.ActionEdit, Intent.ActionSend }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataMimeType = "text/plain")]
+    //[IntentFilter(new[] { Intent.ActionView, Intent.ActionEdit, Intent.ActionSend }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataMimeType = "text/plain")]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -28,33 +28,6 @@ namespace ShoppingList.Droid
             var _mainForms = new App();
 
             LoadApplication(_mainForms);
-
-
-            if (Intent.Action == Intent.ActionView)
-            {
-                //Find way to get the path from intent and save the file
-
-                //var uriFromExtras = Intent.GetParcelableExtra(Intent.ExtraStream) as Android.Net.Uri;
-                //var subject = Intent.GetStringExtra(Intent.ExtraSubject);
-
-                //// Get the info from ClipData 
-                //Android.Net.Uri uri = Intent.Data;
-                
-
-                //// Open a stream from the URI 
-
-
-                //// Save it over 
-                //FileStream fs = new FileStream(path, FileMode.Open);
-                //StreamReader sr = new StreamReader(fs);
-                //string ok = "";
-                //while (!sr.EndOfStream)
-                //{
-                //    ok += sr.ReadLine();
-                //}
-
-
-            }
 
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

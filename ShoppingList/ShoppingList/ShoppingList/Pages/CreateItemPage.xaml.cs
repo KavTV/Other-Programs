@@ -3,27 +3,31 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Threading.Tasks;
+using ShoppingList.Models;
 
 namespace ShoppingList
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CreateItemPage : ContentPage
     {
-        public CreateItemPage()
+        ShopList shopList;
+        public CreateItemPage(ShopList shopList)
         {
             InitializeComponent();
+            this.shopList = shopList;
+            ItemName.Focus();
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
-            await Task.Run(() => ItemName.Focus());
+            //await Task.Run(() => ItemName.Focus());
         }
 
         private async void OnContinueBtnClicked(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(ItemName.Text))
             {
-                await Navigation.PushAsync(new SelectPricePage(ItemName.Text));
+                await Navigation.PushAsync(new SelectPricePage(ItemName.Text, shopList));
             }
             else
             {

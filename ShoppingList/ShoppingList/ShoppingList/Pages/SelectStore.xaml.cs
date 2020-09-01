@@ -14,13 +14,16 @@ namespace ShoppingList
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SelectStore : ContentPage
     {
+        ShopList shopList;
+
         string itemText;
         double itemPrice;
-        public SelectStore(string text, double price)
+        public SelectStore(string text, double price, ShopList shopList)
         {
             InitializeComponent();
             itemText = text;
             itemPrice = price;
+            this.shopList = shopList;
         }
         protected override async void OnAppearing()
         {
@@ -47,8 +50,11 @@ namespace ShoppingList
                 {
                     ItemInformation iteminfo = ItemInformation.Instance();
                     var selectedStore = e.SelectedItem as Store;
-                    await Task.Run(() => iteminfo.AddItem(null, itemText, itemPrice, false, selectedStore));
-                    await Task.Run(() => iteminfo.Save());
+                    Item item = new Item( itemText, 21, false, shopList.Name);
+                    shopList.ItemList.Add(item);
+                    iteminfo.Save(shopList);
+                    //await Task.Run(() => iteminfo.AddItem(null, itemText, itemPrice, false, selectedStore));
+                    //await Task.Run(() => iteminfo.Save());
                     await Navigation.PopToRootAsync();
                 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography.X509Certificates;
@@ -12,9 +13,10 @@ namespace ShoppingList.Models
     class ItemInformation
     {
         private static ItemInformation itemInformation;
-        private string DATA_FILENAME = Path.Combine(App.FolderPath, ".items.txt");
+        private string DATA_FILENAME = Path.Combine(App.FolderPath, "ShopLists/"); // default path
         private BinaryFormatter formatter;
         private Dictionary<string, Item> itemDictionary;
+
 
 
         public static ItemInformation Instance()
@@ -34,57 +36,13 @@ namespace ShoppingList.Models
         }
 
 
-
-        public void AddItem(string key, string text, double price, bool isselected, Store store)
+        public void DeleteShopList(ShopList shopList)
         {
+            DATA_FILENAME = Path.Combine(App.FolderPath, "ShopLists/", $".{shopList.Name}.txt");
             try
             {
-                // If we already had added a friend with this name
-                if (key != null)
-                {
-                    this.itemDictionary.Remove(key);
-                    this.itemDictionary.Add(key, new Item(key, text, price, isselected, store));
-                    Console.WriteLine("You had already added " + text + ", Updating info..");
-                }
-                // Else if we do not have this item details 
-                // in our dictionary
-                else
-                {
-                    // Add him in the dictionary
-                    key = Path.GetRandomFileName();
-                    this.itemDictionary.Add(key, new Item(key, text, price, isselected, store));
-                    Console.WriteLine("Item added successfully.");
-                } // end if
-            }
-            catch (Exception)
-            {
-
-                Console.WriteLine("Something went wrong");
-            }
-        } // end public bool AddFriend(string key,string item, int price, string store, bool isselected)
-
-        public void RemoveItem(string key)
-        {
-            try
-            {
-
-                // If we do not have a friend with this name
-                if (!this.itemDictionary.ContainsKey(key))
-                {
-                    Console.WriteLine(key + " had not been added before.");
-                }
-                // Else if we have a friend with this name
-                else
-                {
-                    if (this.itemDictionary.Remove(key))
-                    {
-                        Console.WriteLine(key + " had been removed successfully.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Unable to remove " + key);
-                    } // end if
-                } // end if
+                //Delete the file
+                File.Delete(DATA_FILENAME);
             }
             catch (Exception)
             {
@@ -92,18 +50,21 @@ namespace ShoppingList.Models
             }
         } // end public bool RemoveFriend(string name)
 
-
-        public void Save()
+        /// <summary>
+        /// Save and serialize the ShopList object
+        /// </summary>
+        /// <param name="shopList"></param>
+        public void Save(ShopList shopList)
         {
-            // Gain code access to the file that we are going
-            // to write to
+            DATA_FILENAME = Path.Combine(App.FolderPath, "ShopLists/", $".{shopList.Name}.txt");
+
             try
             {
                 // Create a FileStream that will write data to file.
                 FileStream writerFileStream =
                     new FileStream(DATA_FILENAME, FileMode.Create, FileAccess.Write);
-                // Save our dictionary of friends to file
-                this.formatter.Serialize(writerFileStream, this.itemDictionary);
+                // Save our dictionary of items to file
+                this.formatter.Serialize(writerFileStream, shopList);
 
                 // Close the writerFileStream when we are done.
                 writerFileStream.Close();
@@ -114,9 +75,9 @@ namespace ShoppingList.Models
             } // end try-catch
         } // end public bool Load()
 
-        public void Load()
+        public ShopList GetShop(ShopList shopList)
         {
-
+            DATA_FILENAME = Path.Combine(App.FolderPath, "ShopLists/", $".{shopList.Name}.txt");
             // Check if we had previously Save information of items
             // previously
             if (File.Exists(DATA_FILENAME))
@@ -124,15 +85,17 @@ namespace ShoppingList.Models
 
                 try
                 {
-                    // Create a FileStream will gain read access to the 
-                    // data file.
+                    // Create a FileStream that will gain read access to the data file.
                     FileStream readerFileStream = new FileStream(DATA_FILENAME,
-                        FileMode.Open, FileAccess.Read);
+                    FileMode.Open, FileAccess.Read);
                     // Reconstruct information of our item from file.
-                    this.itemDictionary = (Dictionary<String, Item>)
-                        this.formatter.Deserialize(readerFileStream);
+                    
+
+                    ShopList shop = (ShopList)this.formatter.Deserialize(readerFileStream);
+
                     // Close the readerFileStream when we are done
                     readerFileStream.Close();
+                    return shop;
 
                 }
                 catch (Exception)
@@ -143,23 +106,59 @@ namespace ShoppingList.Models
                 } // end try-catch
 
             } // end if
+            return null;
+        } // end public GetShop()
 
-        } // end public bool Load()
-
-        public List<Item> GetItems()
+        public ObservableCollection<ShopList> GetShopList()
         {
-            if (this.itemDictionary.Count > 0)
+            DATA_FILENAME = Path.Combine(App.FolderPath, "ShopLists/");
+            try
             {
 
-                List<Item> itemList = new List<Item>();
-                foreach (var item in itemDictionary)
+                if (!Directory.Exists(DATA_FILENAME))
                 {
-                    itemList.Add(item.Value);
+                    Directory.CreateDirectory(DATA_FILENAME);
                 }
-                return itemList;
+                ObservableCollection<ShopList> shopList = new ObservableCollection<ShopList>();
+                //Finds every file in the ShopLists folder
+                foreach (var file in Directory.GetFiles(DATA_FILENAME))
+                {
+                    Console.WriteLine(file);
+                    string[] fileSplit = file.Split('.');
+                    string fileName = "";
+                    for (int i = 4; i < fileSplit.Length - 1; i++)
+                    {
+                        if (i > 4)
+                        {
+                            fileName += ".";
+                        }
+                        fileName += fileSplit[i];
+                    }
+                    shopList.Add(new ShopList(Path.GetFileName(fileName)));
+                }
+                return shopList;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Could not find any shops");
             }
             return null;
         }
 
+
+        /// <summary>
+        /// Gets all the shop lists made
+        /// </summary>
+        /// <returns>List with deserialized ShopList objects</returns>
+        public ObservableCollection<ShopList> GetAllShops()
+        {
+            ObservableCollection<ShopList> shopLists = GetShopList();
+            ObservableCollection<ShopList> newShopList = new ObservableCollection<ShopList>();
+            foreach (var shop in shopLists)
+            {
+                newShopList.Add(GetShop(shop));
+            }
+            return newShopList;
+        }
     }
 }

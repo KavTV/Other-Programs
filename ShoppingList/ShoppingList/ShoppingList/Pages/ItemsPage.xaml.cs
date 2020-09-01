@@ -1,36 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
 using ShoppingList.Models;
-using System.Threading.Tasks;
-
-
+using Xamarin.Forms.Xaml;
 
 namespace ShoppingList
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ItemsPage : ContentPage
     {
-
+        ShopList shopList;
         ItemInformation iteminfo = ItemInformation.Instance();
 
-        public ItemsPage()
+        public ItemsPage(ShopList localShopList)
         {
             InitializeComponent();
+            shopList = iteminfo.GetShop(localShopList);
             
+            listView.ItemsSource = shopList.ItemList.OrderBy(d => d.Text);
+            this.Title = shopList.Name;
         }
+        
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-
             UpdateList();
 
         }
 
         async void OnItemAddClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new CreateItemPage());
+            await Navigation.PushAsync(new CreateItemPage(shopList));
         }
 
         void OnListViewItemSelected(object sender, SelectedItemChangedEventArgs e) //add to list 
@@ -43,68 +43,66 @@ namespace ShoppingList
                 if (selectedItem.IsSelected == false) // If item is not selected, make it selected and save it.
                 {
                     selectedItem.IsSelected = true;
-                    iteminfo.AddItem(selectedItem.Key, selectedItem.Text, selectedItem.Price, selectedItem.IsSelected, selectedItem.Store);
-                    iteminfo.Save();
-                    UpdateList();
+                    //iteminfo.AddItem(selectedItem.Key, selectedItem.Text, selectedItem.Price, selectedItem.IsSelected, selectedItem.Store);
                 }
                 else // else make it unselected
                 {
                     selectedItem.IsSelected = false;
-                    iteminfo.AddItem(selectedItem.Key, selectedItem.Text, selectedItem.Price, selectedItem.IsSelected, selectedItem.Store);
-                    iteminfo.Save();
-                    UpdateList();
+                    //iteminfo.AddItem(selectedItem.Key, selectedItem.Text, selectedItem.Price, selectedItem.IsSelected, selectedItem.Store);
+                    
                 }
-
+                iteminfo.Save(shopList);
+                UpdateList();
             }
         }
 
         private void UpdateList()
         {
 
-            iteminfo.Load();
-
-            var currentItems = iteminfo.GetItems();
-
-            if (currentItems != null)
+            shopList.ItemList.Clear();
+            foreach (var shop in iteminfo.GetShop(shopList).ItemList.ToList())
             {
-                listView.ItemsSource = currentItems
-                    .OrderBy(d => d.StoreName)
-                    .ToList();
+                shopList.ItemList.Add(shop);
+            }
+            if (shopList.ItemList != null)
+            {
+                listView.ItemsSource = shopList.ItemList
+                    .OrderBy(d => d.Text);
             }
             else
             {
-                listView.ItemsSource = null;
+                //listView.ItemsSource = null;
             }
 
         }
 
         private void RemoveSelectedItems()
         {
-            var currentItems = iteminfo.GetItems();
-            if (currentItems != null)
+            
+            if (shopList.ItemList != null)
             {
-                foreach (var item in currentItems)
+                foreach (var item in shopList.ItemList.ToList())
                 {
                     if (item.IsSelected == true)
                     {
-                        iteminfo.RemoveItem(item.Key);
+                        shopList.ItemList.Remove(item);
                     }
                 }
-                iteminfo.Save();
+                iteminfo.Save(shopList);
                 UpdateList();
             }
         }
 
         private void RemoveAllItems()
         {
-            var currentItems = iteminfo.GetItems();
-            if (currentItems != null)
+            
+            if (shopList.ItemList != null)
             {
-                foreach (var item in currentItems)
+                foreach (var item in shopList.ItemList.ToList())
                 {
-                    iteminfo.RemoveItem(item.Key);
+                    shopList.ItemList.Remove(item);
                 }
-                iteminfo.Save();
+                iteminfo.Save(shopList);
                 UpdateList();
             }
         }
@@ -125,15 +123,15 @@ namespace ShoppingList
 
         private async void EditName_Clicked(object sender, EventArgs e)
         {
-            
+
             var menuitem = sender as MenuItem;
             var item = menuitem.BindingContext as Item;
             var result = await DisplayPromptAsync("Ændre Navn", $"Hvad vil du ændre navnet på {item.Text} til?", "OK", "Cancel", $"{item.Text}", -1, Keyboard.Text);
             if (result != null)
             {
                 item.Text = result;
-                iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
-                iteminfo.Save();
+                //iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
+                iteminfo.Save(shopList);
                 UpdateList();
             }
         }
@@ -147,43 +145,13 @@ namespace ShoppingList
             if (result != null)
             {
                 item.Price = Int32.Parse(result);
-                iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
-                iteminfo.Save();
+                //iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
+                iteminfo.Save(shopList);
                 UpdateList();
             }
         }
 
-        private async void EditStore_Clicked(object sender, EventArgs e)// Edits the selected items Store
-        {
-            var menuitem = sender as MenuItem; //Get item selected
-            var item = menuitem.BindingContext as Item;//Convert to Item
 
-            var getShops = await App.Database.GetShopsAsync(); // Get the shops to select from
-            string[] storelist = new string[getShops.Count]; // Make array to put shop labels into.
-            int i = 0;
-            foreach (var thing in getShops) //Make an array of store names
-            {
-                storelist[i] = thing.Name;
-                i++;
-            }
 
-            string result = await DisplayActionSheet("Ændre Butik", "Cancel", null, storelist); // Promt to select store
-            if (result != "Cancel" && result != "")//If a store is selected, find the item and update item.
-            {
-                foreach (var thing in getShops)
-                {
-                    if (thing.Name == result)
-                    {
-                        item.Store = thing;
-                        iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
-                        iteminfo.Save();
-                        UpdateList();
-                        return;
-                    }
-                }
-
-            }
-
-        }
     }
 }

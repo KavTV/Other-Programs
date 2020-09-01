@@ -2,6 +2,8 @@
 using System.IO;
 using Xamarin.Forms;
 using ShoppingList.Data;
+using ShoppingList.Models;
+using ShoppingList.Pages;
 
 namespace ShoppingList
 {
@@ -26,7 +28,8 @@ namespace ShoppingList
         {
             InitializeComponent();
             FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-            MainPage = new NavigationPage(new ItemsPage());
+            MainPage = new NavigationPage(new ShopListPage());
+            //MainPage = new NavigationPage(new AllItemsPage());
         }
         // ...
     }

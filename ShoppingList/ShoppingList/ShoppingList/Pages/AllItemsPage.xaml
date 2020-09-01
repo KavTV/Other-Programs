@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShoppingList.Pages.AllItemsPage"
+             Title="Alle Lister">
+
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#1976d2"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+
+        </Style>
+    </ContentPage.Resources>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Filtre" Clicked="Sort_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <StackLayout>
+    <ListView x:Name="MyListView"
+            ItemsSource="{Binding Items}"
+            ItemTapped="Handle_ItemTapped"
+            CachingStrategy="RecycleElement"
+            HasUnevenRows="True"  >
+
+        <!--Custom View Cells-->
+
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.Row="0" Text="{Binding Text}" Margin="20,0" MinimumHeightRequest="50" FontSize="Medium" TextColor="Black" HorizontalOptions="Start" VerticalOptions="Center" TextDecorations="{Binding Decoration}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Text="{Binding Price, StringFormat='{0:F2}kr'}" Margin="0,0,20,0" TextColor="Black" FontSize="Medium" HorizontalOptions="End" VerticalOptions="CenterAndExpand"/>
+                            <Label Grid.Column="0" Grid.Row="1" Text="{Binding FromList}" Margin="20, 0" Padding="0" VerticalOptions="End"/>
+                        </Grid>
+                    </StackLayout>
+
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+
+    </ListView>
+
+    <Button Text="&#xf068;" FontFamily="{StaticResource FontAwesomeSolid}" Clicked="ToolbarRemove_Clicked" FontSize="15"/>
+    </StackLayout>
+</ContentPage>
