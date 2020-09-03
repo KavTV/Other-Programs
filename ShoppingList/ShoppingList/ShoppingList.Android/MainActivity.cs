@@ -7,7 +7,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-
+using System.Collections.Generic;
 
 namespace ShoppingList.Droid
 {
@@ -29,6 +29,7 @@ namespace ShoppingList.Droid
 
             LoadApplication(_mainForms);
 
+            
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

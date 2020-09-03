@@ -20,6 +20,7 @@ namespace ShoppingList.Droid
 
         const string TAG = "FirebaseIIDService";
 
+        
         public override void OnTokenRefresh()
         {
             var refreshedToken = FirebaseInstanceId.Instance.Token;

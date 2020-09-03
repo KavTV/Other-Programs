@@ -15,7 +15,7 @@ namespace ShoppingList
         {
             InitializeComponent();
             this.shopList = shopList;
-            ItemName.Focus();
+            
         }
 
         protected override void OnAppearing()

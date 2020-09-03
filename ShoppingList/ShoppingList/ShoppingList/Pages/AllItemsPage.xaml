@@ -15,9 +15,10 @@
     </ContentPage.Resources>
     
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Filtre" Clicked="Sort_Clicked"/>
+        <ToolbarItem x:Name="ToolbarFilter" Text="Filtre" Clicked="Filter_Clicked"/>
     </ContentPage.ToolbarItems>
     <StackLayout>
+        
     <ListView x:Name="MyListView"
             ItemsSource="{Binding Items}"
             ItemTapped="Handle_ItemTapped"

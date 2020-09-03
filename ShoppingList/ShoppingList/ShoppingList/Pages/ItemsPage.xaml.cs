@@ -3,6 +3,7 @@ using System.Linq;
 using Xamarin.Forms;
 using ShoppingList.Models;
 using Xamarin.Forms.Xaml;
+using Xamarin.Essentials;
 
 namespace ShoppingList
 {
@@ -16,11 +17,11 @@ namespace ShoppingList
         {
             InitializeComponent();
             shopList = iteminfo.GetShop(localShopList);
-            
+
             listView.ItemsSource = shopList.ItemList.OrderBy(d => d.Text);
             this.Title = shopList.Name;
         }
-        
+
 
         protected override void OnAppearing()
         {
@@ -43,13 +44,12 @@ namespace ShoppingList
                 if (selectedItem.IsSelected == false) // If item is not selected, make it selected and save it.
                 {
                     selectedItem.IsSelected = true;
-                    //iteminfo.AddItem(selectedItem.Key, selectedItem.Text, selectedItem.Price, selectedItem.IsSelected, selectedItem.Store);
+
                 }
                 else // else make it unselected
                 {
                     selectedItem.IsSelected = false;
-                    //iteminfo.AddItem(selectedItem.Key, selectedItem.Text, selectedItem.Price, selectedItem.IsSelected, selectedItem.Store);
-                    
+
                 }
                 iteminfo.Save(shopList);
                 UpdateList();
@@ -78,7 +78,7 @@ namespace ShoppingList
 
         private void RemoveSelectedItems()
         {
-            
+
             if (shopList.ItemList != null)
             {
                 foreach (var item in shopList.ItemList.ToList())
@@ -95,7 +95,7 @@ namespace ShoppingList
 
         private void RemoveAllItems()
         {
-            
+
             if (shopList.ItemList != null)
             {
                 foreach (var item in shopList.ItemList.ToList())
@@ -106,17 +106,57 @@ namespace ShoppingList
                 UpdateList();
             }
         }
-        
-        private void ToolbarRemove_Clicked(object sender, EventArgs e)
+
+        private async void ToolbarRemove_Clicked(object sender, EventArgs e)
         {
-            RemoveSelectedItems();
+            try
+            {
+                var duration = TimeSpan.FromMilliseconds(50);
+                Vibration.Vibrate(duration);
+            }
+            catch (Exception)
+            {
+
+            }
+            var answer = await DisplayAlert("Slet markerede varer?", "Er du sikker på du vil slette alt på din liste?", "Ja", "Nej");
+            if (answer)
+            {
+                try
+                {
+                    var duration = TimeSpan.FromMilliseconds(100);
+                    Vibration.Vibrate(duration);
+                }
+                catch (Exception)
+                {
+
+                }
+                RemoveSelectedItems();
+            }
         }
 
         private async void ToolbarDeleteAll_Clicked(object sender, EventArgs e)
         {
+            try
+            {
+                var duration = TimeSpan.FromMilliseconds(50);
+                Vibration.Vibrate(duration);
+            }
+            catch (Exception)
+            {
+
+            }
             var answer = await DisplayAlert("Slet alt?", "Er du sikker på du vil slette alt på din liste?", "Ja", "Nej");
             if (answer)
             {
+                try
+                {
+                    var duration = TimeSpan.FromMilliseconds(100);
+                    Vibration.Vibrate(duration);
+                }
+                catch (Exception)
+                {
+
+                }
                 RemoveAllItems();
             }
         }
@@ -130,7 +170,7 @@ namespace ShoppingList
             if (result != null)
             {
                 item.Text = result;
-                //iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
+                
                 iteminfo.Save(shopList);
                 UpdateList();
             }
@@ -138,7 +178,7 @@ namespace ShoppingList
 
         private async void EditPrice_Clicked(object sender, EventArgs e) // Edits the selected items price
         {
-            
+
             var menuitem = sender as MenuItem;
             var item = menuitem.BindingContext as Item;
             var result = await DisplayPromptAsync("Ændre Pris", $"Hvad vil du ændre prisen på {item.Text} til?", "OK", "Cancel", $"{item.Price}", -1, Keyboard.Numeric);

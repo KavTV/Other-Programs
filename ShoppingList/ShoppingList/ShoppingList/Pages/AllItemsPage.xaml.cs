@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -155,9 +155,10 @@ namespace ShoppingList.Pages
             MyListView.ItemsSource = itemList.OrderByDescending(d => d.Price);
         }
 
-        private async void Sort_Clicked(object sender, EventArgs e)
+        private async void Filter_Clicked(object sender, EventArgs e)
         {
             string action = await DisplayActionSheet("Hvilket filter vil du bruge?", "Cancel", null, "Sorter efter butik", "Vis kun billigste varer", "Samme varer", "Pris Lav/Høj", "Pris Høj/Lav");
+            ToolbarFilter.Text = action;
             switch (action)
             {
                 case "Sorter efter butik":
@@ -179,10 +180,29 @@ namespace ShoppingList.Pages
                     break;
             }
             UpdateList();
-            
+
         }
 
-        private void ToolbarRemove_Clicked(object sender, EventArgs e)
+        private async void ToolbarRemove_Clicked(object sender, EventArgs e)
+        {
+            var answer = await DisplayAlert("Slet markerede varer?", "Er du sikker på du vil slette alt på din liste?", "Ja", "Nej");
+            if (answer)
+            {
+                try
+                {
+                    var duration = TimeSpan.FromMilliseconds(100);
+                    Vibration.Vibrate(duration);
+                }
+                catch (Exception)
+                {
+
+                }
+                RemoveSelectedItems();
+            }
+
+        }
+
+        private void RemoveSelectedItems()
         {
             //Deletes all the marked items
             foreach (var shop in shopLists.ToList())
@@ -202,7 +222,6 @@ namespace ShoppingList.Pages
                 }
             }
             UpdateList();
-
         }
     }
 }
