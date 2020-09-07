@@ -10,6 +10,7 @@ namespace ShoppingList
     public partial class App : Application
     {
         public static string FolderPath { get; private set; }
+        
         private static ShopDatabase database;
 
         public static ShopDatabase Database
@@ -28,8 +29,9 @@ namespace ShoppingList
         {
             InitializeComponent();
             FolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+            
             MainPage = new NavigationPage(new ShopListPage());
-            //MainPage = new NavigationPage(new AllItemsPage());
+            
         }
         // ...
     }

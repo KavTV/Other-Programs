@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Xamarin.Forms.Xaml;
 
 namespace ShoppingList.Models
 {
@@ -160,5 +161,66 @@ namespace ShoppingList.Models
             }
             return newShopList;
         }
+
+        /// <summary>
+        /// This selects the object if not selected, and deselects it if selected
+        /// </summary>
+        /// <param name="item"></param>
+        public void ChangeIsSelected(Item item)
+        {
+            if (item.IsSelected == false) // If item is not selected, make it selected and save it.
+            {
+                item.IsSelected = true;
+
+            }
+            else // else make it unselected
+            {
+                item.IsSelected = false;
+
+            }
+        }
+
+        /// <summary>
+        /// Removes all the selected items from a ShopList and saves it if anything was deleted
+        /// </summary>
+        /// <param name="shop">The list you want to check</param>
+        public void RemoveSelectedItems(ShopList shopList)
+        {
+            try
+            {
+                Vibration.Vibrate(TimeSpan.FromMilliseconds(50));
+            }
+            catch (Exception){}
+            bool isSomethingDeleted = false;
+            foreach (var item in shopList.ItemList.ToList())
+            {
+                if (item.IsSelected)
+                {
+                    shopList.ItemList.Remove(item);
+                    isSomethingDeleted = true;
+                }
+            }
+            if (isSomethingDeleted)
+            {
+                Save(shopList);
+            }
+        }
+
+        /// <summary>
+        /// Removes all items from the shopList
+        /// </summary>
+        /// <param name="shopList"></param>
+        public void RemoveAllItems(ShopList shopList)
+        {
+            try
+            {
+                Vibration.Vibrate(TimeSpan.FromMilliseconds(50));
+            }
+            catch (Exception){}
+
+            shopList.ItemList.Clear();
+        }
+
+        
     }
 }

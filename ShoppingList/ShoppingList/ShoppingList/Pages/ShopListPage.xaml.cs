@@ -54,7 +54,7 @@ namespace ShoppingList
         /// </summary>
         private async void OnAddItemClicked(object sender, EventArgs e)
         {
-            var result = await DisplayPromptAsync("Ny Liste", "Hvad vil du kalde din liste?", "Add", "Cancel", "Butik", -1, Keyboard.Text);
+            var result = await DisplayPromptAsync("Ny Liste", "Hvad vil du kalde din liste?", "Add", "Cancel", "Butik", -1, Keyboard.Text,"");
             if (result != null)
             {
                 foreach (var item in iteminfo.GetShopList())

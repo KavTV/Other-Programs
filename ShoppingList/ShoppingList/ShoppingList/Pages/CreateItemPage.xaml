@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:customEntry="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="ShoppingList.CreateItemPage"
              Title="Tilføj Ting">
     <!--Styling-->
@@ -25,14 +26,19 @@
     <StackLayout Margin="20" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
         <Label Text="Skriv navnet på ting" FontSize="25" 
                HorizontalOptions="Center" TextColor="Black"></Label>
-        <Entry x:Name="ItemName" Placeholder="Skriv det du vil tilføje til din liste" FontSize="20" Text="{Binding Text}" Completed="OnContinueBtnClicked" Keyboard="Text"/>
+        <customEntry:AutoSuggestBox x:Name="ItemName" PlaceholderText="Kaffe" WidthRequest="200" 
+                                    TextChanged="AutoSuggestBox_TextChanged"
+                                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                                    SuggestionChosen="AutoSuggestBox_SuggestionChosen" 
+                                    TextColor="Black"/>
+
         <Grid>
 
             <Button Text="&#xf35a;" FontSize="25" HorizontalOptions="Center"
                     WidthRequest="50" HeightRequest="50" CornerRadius="25"
                     FontFamily="{StaticResource FontAwesomeSolid}"
                     Clicked="OnContinueBtnClicked"/>
-            
+
         </Grid>
     </StackLayout>
 </ContentPage>

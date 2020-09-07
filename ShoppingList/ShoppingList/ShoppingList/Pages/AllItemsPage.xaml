@@ -13,45 +13,51 @@
 
         </Style>
     </ContentPage.Resources>
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ToolbarFilter" Text="Filtre" Clicked="Filter_Clicked"/>
     </ContentPage.ToolbarItems>
     <StackLayout>
-        
-    <ListView x:Name="MyListView"
+
+        <ListView x:Name="MyListView"
             ItemsSource="{Binding Items}"
             ItemTapped="Handle_ItemTapped"
             CachingStrategy="RecycleElement"
             HasUnevenRows="True"  >
 
-        <!--Custom View Cells-->
+            <!--Custom View Cells-->
 
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <StackLayout>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                <ColumnDefinition Width="auto"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"></RowDefinition>
-                                <RowDefinition Height="*"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Column="0" Grid.Row="0" Text="{Binding Text}" Margin="20,0" MinimumHeightRequest="50" FontSize="Medium" TextColor="Black" HorizontalOptions="Start" VerticalOptions="Center" TextDecorations="{Binding Decoration}"/>
-                            <Label Grid.Column="1" Grid.Row="0" Text="{Binding Price, StringFormat='{0:F2}kr'}" Margin="0,0,20,0" TextColor="Black" FontSize="Medium" HorizontalOptions="End" VerticalOptions="CenterAndExpand"/>
-                            <Label Grid.Column="0" Grid.Row="1" Text="{Binding FromList}" Margin="20, 0" Padding="0" VerticalOptions="End"/>
-                        </Grid>
-                    </StackLayout>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Text}" Margin="20,0" MinimumHeightRequest="50" FontSize="Medium" TextColor="Black" TextDecorations="{Binding Decoration}"/>
+                                <Label Grid.Column="1" Grid.Row="0" Text="{Binding Price, StringFormat='{0:F2}kr'}" Margin="0,0,20,0" TextColor="Black" FontSize="Medium" />
+                                <Label Grid.Column="0" Grid.Row="1" Text="{Binding FromList}" Margin="20, 0" Padding="0" />
+                            </Grid>
+                        </StackLayout>
 
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
 
-    </ListView>
-
-    <Button Text="&#xf068;" FontFamily="{StaticResource FontAwesomeSolid}" Clicked="ToolbarRemove_Clicked" FontSize="15"/>
+        </ListView>
+        <Grid MinimumHeightRequest="30" ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Text="&#xf2ed;" FontFamily="{StaticResource FontAwesomeSolid}" Clicked="ToolbarRemoveAll_Clicked" FontSize="15"/>
+            <Button Grid.Column="1" Text="&#xf068;" FontFamily="{StaticResource FontAwesomeSolid}" Clicked="ToolbarRemove_Clicked" FontSize="15"/>
+        </Grid>
     </StackLayout>
 </ContentPage>

@@ -16,9 +16,11 @@ namespace ShoppingList
         public ItemsPage(ShopList localShopList)
         {
             InitializeComponent();
+            //Get the UnSerialized ShopList
             shopList = iteminfo.GetShop(localShopList);
-
+            //Apply it to the listview
             listView.ItemsSource = shopList.ItemList.OrderBy(d => d.Text);
+            //Change the page name to the shoplist name
             this.Title = shopList.Name;
         }
 
@@ -26,7 +28,6 @@ namespace ShoppingList
         protected override void OnAppearing()
         {
             UpdateList();
-
         }
 
         async void OnItemAddClicked(object sender, EventArgs e)
@@ -41,16 +42,7 @@ namespace ShoppingList
             {
 
                 var selectedItem = e.SelectedItem as Item;
-                if (selectedItem.IsSelected == false) // If item is not selected, make it selected and save it.
-                {
-                    selectedItem.IsSelected = true;
-
-                }
-                else // else make it unselected
-                {
-                    selectedItem.IsSelected = false;
-
-                }
+                iteminfo.ChangeIsSelected(selectedItem);
                 iteminfo.Save(shopList);
                 UpdateList();
             }
@@ -69,10 +61,7 @@ namespace ShoppingList
                 listView.ItemsSource = shopList.ItemList
                     .OrderBy(d => d.Text);
             }
-            else
-            {
-                //listView.ItemsSource = null;
-            }
+            
 
         }
 
@@ -93,20 +82,6 @@ namespace ShoppingList
             }
         }
 
-        private void RemoveAllItems()
-        {
-
-            if (shopList.ItemList != null)
-            {
-                foreach (var item in shopList.ItemList.ToList())
-                {
-                    shopList.ItemList.Remove(item);
-                }
-                iteminfo.Save(shopList);
-                UpdateList();
-            }
-        }
-
         private async void ToolbarRemove_Clicked(object sender, EventArgs e)
         {
             try
@@ -118,19 +93,11 @@ namespace ShoppingList
             {
 
             }
-            var answer = await DisplayAlert("Slet markerede varer?", "Er du sikker på du vil slette alt på din liste?", "Ja", "Nej");
+            var answer = await DisplayAlert("Slet markerede ting?", "Er du sikker på du vil slette markerede ting på din liste?", "Ja", "Nej");
             if (answer)
             {
-                try
-                {
-                    var duration = TimeSpan.FromMilliseconds(100);
-                    Vibration.Vibrate(duration);
-                }
-                catch (Exception)
-                {
-
-                }
-                RemoveSelectedItems();
+                iteminfo.RemoveSelectedItems(shopList);
+                UpdateList();
             }
         }
 
@@ -138,26 +105,20 @@ namespace ShoppingList
         {
             try
             {
-                var duration = TimeSpan.FromMilliseconds(50);
-                Vibration.Vibrate(duration);
+                Vibration.Vibrate(TimeSpan.FromMilliseconds(50));
             }
-            catch (Exception)
-            {
+            catch (Exception){}
 
-            }
             var answer = await DisplayAlert("Slet alt?", "Er du sikker på du vil slette alt på din liste?", "Ja", "Nej");
             if (answer)
             {
-                try
-                {
-                    var duration = TimeSpan.FromMilliseconds(100);
-                    Vibration.Vibrate(duration);
-                }
-                catch (Exception)
-                {
 
+                if (shopList.ItemList != null)
+                {
+                    iteminfo.RemoveAllItems(shopList);
+                    iteminfo.Save(shopList);
+                    UpdateList();
                 }
-                RemoveAllItems();
             }
         }
 
@@ -166,7 +127,7 @@ namespace ShoppingList
 
             var menuitem = sender as MenuItem;
             var item = menuitem.BindingContext as Item;
-            var result = await DisplayPromptAsync("Ændre Navn", $"Hvad vil du ændre navnet på {item.Text} til?", "OK", "Cancel", $"{item.Text}", -1, Keyboard.Text);
+            var result = await DisplayPromptAsync("Ændre Navn", $"Hvad vil du ændre navnet på {item.Text} til?", "OK", "Cancel", $"{item.Text}", -1, Keyboard.Text,$"{item.Text}");
             if (result != null)
             {
                 item.Text = result;
@@ -181,11 +142,11 @@ namespace ShoppingList
 
             var menuitem = sender as MenuItem;
             var item = menuitem.BindingContext as Item;
-            var result = await DisplayPromptAsync("Ændre Pris", $"Hvad vil du ændre prisen på {item.Text} til?", "OK", "Cancel", $"{item.Price}", -1, Keyboard.Numeric);
+            var result = await DisplayPromptAsync("Ændre Pris", $"Hvad vil du ændre prisen på {item.Text} til?", "OK", "Cancel", $"{item.Price}", -1, Keyboard.Numeric, $"{item.Price}");
             if (result != null)
             {
                 item.Price = Int32.Parse(result);
-                //iteminfo.AddItem(item.Key, item.Text, item.Price, item.IsSelected, item.Store);
+                
                 iteminfo.Save(shopList);
                 UpdateList();
             }

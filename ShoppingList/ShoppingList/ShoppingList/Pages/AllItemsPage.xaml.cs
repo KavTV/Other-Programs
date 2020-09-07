@@ -40,22 +40,11 @@ namespace ShoppingList.Pages
             //Make the item selected
             foreach (var shop in shopLists)
             {
-
                 foreach (var item in shop.ItemList)
                 {
                     if (item == selectedItem)
                     {
-                        if (item.IsSelected == false)
-                        {
-                            item.IsSelected = true;
-
-                        }
-                        else
-                        {
-                            item.IsSelected = false;
-
-                        }
-
+                        iteminfo.ChangeIsSelected(selectedItem);
                         iteminfo.Save(shop);
                         UpdateList();
 
@@ -99,13 +88,16 @@ namespace ShoppingList.Pages
                     SortPriceHighLow();
                     break;
                 default:
-                    MyListView.ItemsSource = itemList.OrderBy(d => d.Text).ThenBy(d => d.FromList);
+                    MyListView.ItemsSource = itemList.OrderBy(d => d.FromList).ThenBy(d => d.Text);
                     break;
             }
 
 
         }
 
+        /// <summary>
+        /// Only shows the cheapest of same item
+        /// </summary>
         void ShowCheapestItems()
         {
             //Compares the items from the same list and if 2 items got the same name, the most expensive is removed
@@ -157,11 +149,11 @@ namespace ShoppingList.Pages
 
         private async void Filter_Clicked(object sender, EventArgs e)
         {
-            string action = await DisplayActionSheet("Hvilket filter vil du bruge?", "Cancel", null, "Sorter efter butik", "Vis kun billigste varer", "Samme varer", "Pris Lav/Høj", "Pris Høj/Lav");
+            string action = await DisplayActionSheet("Hvilket filter vil du bruge?", "Cancel", null, "Sorter efter liste", "Vis kun billigste ting", "Samme ting", "Pris Lav/Høj", "Pris Høj/Lav");
             ToolbarFilter.Text = action;
             switch (action)
             {
-                case "Sorter efter butik":
+                case "Sorter efter liste":
                     sortingMethod = "";
                     break;
                 case "Vis kun billigste varer":
@@ -185,43 +177,53 @@ namespace ShoppingList.Pages
 
         private async void ToolbarRemove_Clicked(object sender, EventArgs e)
         {
-            var answer = await DisplayAlert("Slet markerede varer?", "Er du sikker på du vil slette alt på din liste?", "Ja", "Nej");
+            try
+            {
+                Vibration.Vibrate(TimeSpan.FromMilliseconds(50));
+            }
+            catch (Exception) { }
+            var answer = await DisplayAlert("Slet markerede ting?", "Er du sikker på du vil slette markerede ting på din liste?", "Ja", "Nej");
             if (answer)
             {
-                try
-                {
-                    var duration = TimeSpan.FromMilliseconds(100);
-                    Vibration.Vibrate(duration);
-                }
-                catch (Exception)
-                {
-
-                }
                 RemoveSelectedItems();
+            }
+
+        }
+
+        private async void ToolbarRemoveAll_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                Vibration.Vibrate(TimeSpan.FromMilliseconds(50));
+            }
+            catch (Exception) { }
+            var answer = await DisplayAlert("Slet ALLE varer?", "Er du sikker på du vil slette ALT på ALLE dine lister?", "Ja", "Nej");
+            if (answer)
+            {
+                RemoveAllItems();
+
             }
 
         }
 
         private void RemoveSelectedItems()
         {
+
             //Deletes all the marked items
             foreach (var shop in shopLists.ToList())
             {
-                bool isSomethingDeleted = false;
-                foreach (var item in shop.ItemList.ToList())
-                {
-                    if (item.IsSelected)
-                    {
-                        shop.ItemList.Remove(item);
-                        isSomethingDeleted = true;
-                    }
-                }
-                if (isSomethingDeleted)
-                {
-                    iteminfo.Save(shop);
-                }
+                iteminfo.RemoveSelectedItems(shop);
             }
             UpdateList();
+        }
+        private void RemoveAllItems()
+        {
+            foreach (var shop in shopLists.ToList())
+            {
+                iteminfo.RemoveAllItems(shop);
+                iteminfo.Save(shop);
+                UpdateList();
+            }
         }
     }
 }
