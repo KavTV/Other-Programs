@@ -18,7 +18,7 @@ namespace ShoppingList
         ShopList shopList;
 
         string SUGGESTION_FILENAME = Path.Combine(App.FolderPath, "Suggestions.txt");
-
+        
         public CreateItemPage(ShopList shopList)
         {
             InitializeComponent();
@@ -29,12 +29,16 @@ namespace ShoppingList
                 FileStream fs = new FileStream(SUGGESTION_FILENAME, FileMode.Create);
                 fs.Close();
             }
-
+            ItemName.Focus();
+            
         }
 
         protected override void OnAppearing()
         {
-            //await Task.Run(() => ItemName.Focus());
+            
+            ItemName.Focus();
+            
+            base.OnAppearing();
         }
 
         private async void OnContinueBtnClicked(object sender, EventArgs e)
@@ -163,7 +167,7 @@ namespace ShoppingList
                 sw.WriteLine(suggestion);
             }
             sw.Close();
-
+           
 
         }
 
